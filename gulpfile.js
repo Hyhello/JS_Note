@@ -83,7 +83,7 @@ gulp.task('copy', function () {
 
 // 添加hash
 gulp.task('rev', function () {
-    return gulp.src([buildDir + '/' + branch + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/' + branch + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf}'])
+    return gulp.src([buildDir + '/' + branch + '/**/*', '!' + buildDir + '/' + branch + '/CNAME', '!' + buildDir + '/**/index.html', '!' + buildDir + '/' + branch + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf}'])
         .pipe(rev())
         .pipe(revDel())
         .pipe(gulp.dest(buildDir + '/' + branch))
