@@ -83,17 +83,17 @@ gulp.task('copy', function () {
 
 // 添加hash
 gulp.task('rev', function () {
-    return gulp.src([buildDir + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf,md}'])
+    return gulp.src([buildDir + '/' + branch + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf}'])
         .pipe(rev())
         .pipe(revDel())
-        .pipe(gulp.dest(buildDir))
+        .pipe(gulp.dest(buildDir + '/' + branch))
         .pipe(rev.manifest())
         .pipe(gulp.dest(buildDir));
 });
 
 // revCollector
 gulp.task('revCollector', function () {
-    return gulp.src(['./dist/**/*.html', './dist/*.json'])
+    return gulp.src([buildDir + '/**/*.html', buildDir + '/*.json'])
             .pipe(revCollector({replaceReved: true}))
             .pipe(gulp.dest(buildDir));
 });
@@ -117,7 +117,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', cb);
+    runSequence('clean:dist', 'copy', 'minify-html', 'minify-css', 'rev', 'revCollector', cb);
 });
 
 gulp.task('serve', ['init'], function () {
