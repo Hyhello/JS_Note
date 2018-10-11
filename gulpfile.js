@@ -15,6 +15,8 @@ var revCollector = require('gulp-rev-collector');
 var rev = require('gulp-rev');
 var autoprefixer = require('gulp-autoprefixer');
 var root = require('./book.json').root;
+var buildDir = './dist';
+var branch = shelljs.exec('git branch', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
 
 gulp.task('init', function () {
     if (!shelljs.test('-d', root)) {
@@ -40,19 +42,19 @@ gulp.task('init', function () {
 
 // 压缩 public 目录 css
 gulp.task('minify-css', function() {
-    return gulp.src('./dist/**/*.css')
+    return gulp.src(buildDir + '/**/*.css')
         .pipe(autoprefixer({
             browsers: ['last 2 versions', 'Android >= 4.0'],
             cascade: true, //是否美化属性值 默认：true 像这样：
             remove: true //是否去掉不必要的前缀 默认：true
         }))
         .pipe(minifycss())
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(buildDir));
 });
 
 // 压缩 public 目录 html
 gulp.task('minify-html', function() {
-  return gulp.src('./dist/**/*.html')
+  return gulp.src(buildDir + '/**/*.html')
     .pipe(htmlclean())
     .pipe(htmlmin({
          removeComments: true,
@@ -60,7 +62,7 @@ gulp.task('minify-html', function() {
          minifyCSS: true,
          minifyURLs: true,
     }))
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest(buildDir))
 });
 
 // 压缩 public/js 目录 js
@@ -76,28 +78,28 @@ gulp.task('minify-html', function() {
 
 gulp.task('copy', function () {
     return gulp.src(['./_book/**/*', '!./_book/**/*.md'])
-                .pipe(gulp.dest('./dist'));
+                .pipe(gulp.dest(buildDir + '/' + branch));
 });
 
 // 添加hash
 gulp.task('rev', function () {
-    return gulp.src(['./dist/**/*', '!./dist/**/index.html', '!./dist/*.json', '!./dist/**/*.{otf,woff,svg,woff2,eot,ttf,md}'])
+    return gulp.src([buildDir + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf,md}'])
         .pipe(rev())
         .pipe(revDel())
-        .pipe(gulp.dest('./dist'))
+        .pipe(gulp.dest(buildDir))
         .pipe(rev.manifest())
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(buildDir));
 });
 
 // revCollector
 gulp.task('revCollector', function () {
     return gulp.src(['./dist/**/*.html', './dist/*.json'])
             .pipe(revCollector({replaceReved: true}))
-            .pipe(gulp.dest('./dist'));
+            .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('clean:dist', function (cb) {
-    return del(['./dist'], cb);
+    return del([buildDir], cb);
 });
 
 // clean
@@ -107,7 +109,7 @@ gulp.task('clean', function (cb) {
 
 // 发布
 gulp.task('deploy', function () {
-    return gulp.src('./dist/**/*')
+    return gulp.src(buildDir + '/**/*')
             .pipe(ghPages({
                 branch: 'master'
             }));
