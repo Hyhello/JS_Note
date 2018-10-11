@@ -127,7 +127,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', 'minify-html', 'minify-css', 'rev', 'revCollector', 'clean:revJSON', 'copy:cname', cb);
+    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', ['clean:revJSON', 'copy:cname'], cb);
 });
 
 gulp.task('serve', ['init'], function () {
