@@ -98,6 +98,11 @@ gulp.task('revCollector', function () {
             .pipe(gulp.dest(buildDir));
 });
 
+gulp.task('copy:cname', function () {
+    return gulp.src('./CNAME')
+            .pipe(gulp.dest(buildDir));
+});
+
 gulp.task('clean:dist', function (cb) {
     return del([buildDir], cb);
 });
@@ -105,6 +110,11 @@ gulp.task('clean:dist', function (cb) {
 // clean
 gulp.task('clean', function (cb) {
     return del(['./_book'], cb);
+});
+
+// clean
+gulp.task('clean:revJSON', function (cb) {
+    return del([buildDir + '/*.json'], cb);
 });
 
 // 发布
@@ -117,7 +127,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', 'minify-html', 'minify-css', 'rev', 'revCollector', cb);
+    runSequence('clean:dist', 'copy', 'minify-html', 'minify-css', 'rev', 'revCollector', 'clean:revJSON', 'copy:cname', cb);
 });
 
 gulp.task('serve', ['init'], function () {
