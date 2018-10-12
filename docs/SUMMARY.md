@@ -4,8 +4,8 @@
 * [简介](README.md)
 
 ## 基础
-* [安装](basics/installation.md)
-* [命令](basics/commands.md)
+* [canvas元素](basics/element.md)
+* [canvas属性](basics/attribute.md)
 * [结构](basics/structure.md)
 * [配置](basics/settings.md)
 * [发布](basics/deploy.md)
