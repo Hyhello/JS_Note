@@ -12,9 +12,11 @@ var runSequence = require('run-sequence');
 var revDel = require('gulp-rev-delete-original');
 var revCollector = require('gulp-rev-collector');
 var rev = require('gulp-rev');
+var ghPages = require('gh-pages');
 var autoprefixer = require('gulp-autoprefixer');
 var root = require('./book.json').root;
 var buildDir = './dist';
+
 var branch = shelljs.exec('git branch | grep "*"', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
 
 gulp.task('init', function () {
@@ -112,11 +114,11 @@ gulp.task('clean:revJSON', function (cb) {
 });
 
 // 发布
-gulp.task('deploy', function () {
-    return gulp.src(buildDir + '/**/*')
-            .pipe(ghPages({
-                branch: 'master'
-            }));
+gulp.task('deploy', function (cb) {
+    return ghPages.publish(buildDir, {
+        branch: 'master',
+        add: true
+    }, cb);
 });
 
 // build
