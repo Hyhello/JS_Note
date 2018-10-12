@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var del = require('del');
 var shelljs = require('shelljs');
-var ghPages = require('gulp-gh-pages');
 var minifycss = require('gulp-minify-css');
 // var uglify = require('gulp-uglify');
 // var concat = require('gulp-concat');
@@ -16,7 +15,7 @@ var rev = require('gulp-rev');
 var autoprefixer = require('gulp-autoprefixer');
 var root = require('./book.json').root;
 var buildDir = './dist';
-var branch = shelljs.exec('git branch', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
+var branch = shelljs.exec('git branch | grep "*"', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
 
 gulp.task('init', function () {
     if (!shelljs.test('-d', root)) {
@@ -98,11 +97,6 @@ gulp.task('revCollector', function () {
             .pipe(gulp.dest(buildDir));
 });
 
-gulp.task('copy:cname', function () {
-    return gulp.src('./CNAME')
-            .pipe(gulp.dest(buildDir));
-});
-
 gulp.task('clean:dist', function (cb) {
     return del([buildDir], cb);
 });
@@ -127,7 +121,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', ['clean:revJSON', 'copy:cname'], cb);
+    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', 'clean:revJSON', cb);
 });
 
 gulp.task('serve', ['init'], function () {
