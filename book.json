@@ -113,6 +113,10 @@
                     "text": "canvas"
                 },
                 {
+                    "value": "https://book.hyhello.top/gulp",
+                    "text": "gulp"
+                },
+                {
                     "value": "https://blog.hyhello.top",
                     "text": "blog"
                 }

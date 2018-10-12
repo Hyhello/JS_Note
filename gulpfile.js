@@ -7,7 +7,7 @@ var minifycss = require('gulp-minify-css');
 var htmlmin = require('gulp-htmlmin');
 var htmlclean = require('gulp-htmlclean');
 var runSequence = require('run-sequence');
-// var gutil = require('gulp-util');
+var gutil = require('gulp-util');
 // var babel = require('gulp-babel');
 var revDel = require('gulp-rev-delete-original');
 var revCollector = require('gulp-rev-collector');
@@ -114,11 +114,13 @@ gulp.task('clean:revJSON', function (cb) {
 });
 
 // 发布
-gulp.task('deploy', function (cb) {
+gulp.task('deploy', function () {
     return ghPages.publish(buildDir, {
         branch: 'master',
         add: true
-    }, cb);
+    }, function (err) {
+        gutil.log(gutil.colors.red('[Error]'), err.toString());
+    });
 });
 
 // build
