@@ -15,7 +15,7 @@ var rev = require('gulp-rev');
 var autoprefixer = require('gulp-autoprefixer');
 var root = require('./book.json').root;
 var buildDir = './dist';
-var branch = shelljs.exec('git branch', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
+var branch = shelljs.exec('git branch | grep "*"', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
 
 gulp.task('init', function () {
     if (!shelljs.test('-d', root)) {
