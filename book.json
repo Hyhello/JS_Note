@@ -119,7 +119,8 @@
                 },
                 {
                     "value": "https://blog.hyhello.top",
-                    "text": "blog"
+                    "text": "blog",
+                    "selected": true
                 }
             ]
         }
