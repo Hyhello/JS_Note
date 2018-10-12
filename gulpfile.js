@@ -79,15 +79,15 @@ gulp.task('minify-html', function() {
 
 gulp.task('copy', function () {
     return gulp.src(['./_book/**/*', '!./_book/**/*.md'])
-                .pipe(gulp.dest(buildDir + '/' + branch));
+                .pipe(gulp.dest(buildDir));
 });
 
 // 添加hash
 gulp.task('rev', function () {
-    return gulp.src([buildDir + '/' + branch + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/' + branch + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf}'])
+    return gulp.src([buildDir + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf}'])
         .pipe(rev())
         .pipe(revDel())
-        .pipe(gulp.dest(buildDir + '/' + branch))
+        .pipe(gulp.dest(buildDir))
         .pipe(rev.manifest())
         .pipe(gulp.dest(buildDir));
 });
@@ -117,7 +117,7 @@ gulp.task('clean:revJSON', function (cb) {
 gulp.task('deploy', function () {
     return ghPages.publish(buildDir, {
         branch: 'master',
-        add: true
+        dest: branch
     }, function (err) {
         gutil.log(gutil.colors.red('[Error]'), err.toString());
     });
