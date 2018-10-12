@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "clean": "gulp clean",
-    "deploy": "gulp clean && gitbook build && gulp build && gulp deploy",
+    "deploy": "gulp clean && gitbook build && gulp build && node ./deploy.js",
     "dev": "gulp serve"
   },
   "repository": {
