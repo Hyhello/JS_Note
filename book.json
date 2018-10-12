@@ -109,6 +109,10 @@
         "versions": {
             "options": [
                 {
+                    "value": "https://book.hyhello.top/gulp",
+                    "text": "gulp"
+                },
+                {
                     "value": "https://book.hyhello.top/canvas",
                     "text": "canvas"
                 },
