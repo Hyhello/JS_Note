@@ -108,11 +108,6 @@ gulp.task('clean', function (cb) {
     return del(['./_book'], cb);
 });
 
-// clean
-gulp.task('clean:revJSON', function (cb) {
-    return del([buildDir + '/*.json'], cb);
-});
-
 // 发布
 gulp.task('deploy', function () {
     return ghPages.publish(buildDir, {
@@ -125,7 +120,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', 'clean:revJSON', cb);
+    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', cb);
 });
 
 gulp.task('serve', ['init'], function () {

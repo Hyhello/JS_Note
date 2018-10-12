@@ -107,20 +107,7 @@
             "style": "flat"
         },
         "versions": {
-            "options": [
-                {
-                    "value": "https://book.hyhello.top/canvas",
-                    "text": "canvas"
-                },
-                {
-                    "value": "https://book.hyhello.top/gulp",
-                    "text": "gulp"
-                },
-                {
-                    "value": "https://blog.hyhello.top",
-                    "text": "blog"
-                }
-            ]
+            "gitbookConfigURL": "https://book.hyhello.top/book.json"
         }
     }
 }
