@@ -2,16 +2,10 @@ var gulp = require('gulp');
 var del = require('del');
 var shelljs = require('shelljs');
 var minifycss = require('gulp-minify-css');
-// var uglify = require('gulp-uglify');
-// var concat = require('gulp-concat');
 var htmlmin = require('gulp-htmlmin');
 var htmlclean = require('gulp-htmlclean');
 var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
-// var babel = require('gulp-babel');
-var revDel = require('gulp-rev-delete-original');
-var revCollector = require('gulp-rev-collector');
-var rev = require('gulp-rev');
 var ghPages = require('gh-pages');
 var autoprefixer = require('gulp-autoprefixer');
 var root = require('./book.json').root;
@@ -66,37 +60,9 @@ gulp.task('minify-html', function() {
     .pipe(gulp.dest(buildDir))
 });
 
-// 压缩 public/js 目录 js
-// gulp.task('minify-js', function() {
-//     return gulp.src(['./dist/**/*.js'])
-//         .pipe(babel())
-//         .pipe(uglify())
-//         .on('error', function(err) {
-//             gutil.log(gutil.colors.red('[Error]'), err.toString());
-//         })
-//         .pipe(gulp.dest('./dist'));
-// });
-
 gulp.task('copy', function () {
     return gulp.src(['./_book/**/*', '!./_book/**/*.md'])
                 .pipe(gulp.dest(buildDir));
-});
-
-// 添加hash
-gulp.task('rev', function () {
-    return gulp.src([buildDir + '/**/*', '!' + buildDir + '/**/index.html', '!' + buildDir + '/*.json', '!' + buildDir + '/**/*.{otf,woff,svg,woff2,eot,ttf}'])
-        .pipe(rev())
-        .pipe(revDel())
-        .pipe(gulp.dest(buildDir))
-        .pipe(rev.manifest())
-        .pipe(gulp.dest(buildDir));
-});
-
-// revCollector
-gulp.task('revCollector', function () {
-    return gulp.src([buildDir + '/**/*.html', buildDir + '/*.json'])
-            .pipe(revCollector({replaceReved: true}))
-            .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('clean:dist', function (cb) {
@@ -120,7 +86,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], 'rev', 'revCollector', cb);
+    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], cb);
 });
 
 gulp.task('serve', ['init'], function () {
