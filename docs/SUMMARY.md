@@ -6,7 +6,7 @@
 ## 基础
 * [canvas元素](basics/element.md)
 * [canvas属性](basics/attribute.md)
-* [结构](basics/structure.md)
+* [绘制环境2d](basics/drawEnv.md)
 * [配置](basics/settings.md)
 * [发布](basics/deploy.md)
 * [生成电子书](basics/generating-ebooks-and-pdfs.md)
