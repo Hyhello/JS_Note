@@ -10,7 +10,7 @@
 | :------: | :------: |
 | canvas | 指向改绘图环境所属的canvas对象，改属性最常见的用途就是通过它来获取canvas的贩毒及高度，分别调用context.canvas.width,context.canvas.height |
 | fillstyle | 指定该绘图环境在否需的图形填充操作中所使用的颜色，渐变色或图案。 |
-| filter | [请参考](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/filter) |
+| filter | 点击此处：[可参考](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/filter) |
 | font | 设定在调用绘图环境对象的fillText() 或 strokeText() 方法时，所使用的字型。 |
 | globalAlpha | 全局透明度设定，它可以取0（完全透明）~ 1.0（完全不透明）之间的值。浏览器会将每个像素的alpha值与该值相乘。在绘制图像时也是如此。 |
 | globalCompsiteOperation | 该值决定了浏览器将某个物体绘制在其他物体之上时，所采用的绘制方式。 |
