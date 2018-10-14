@@ -107,7 +107,6 @@
             "style": "flat"
         },
         "versions": {
-            "gitbookConfigURL": "https://book.hyhello.top/book.json",
             "options": [
                 {
                     "value": "https://book.hyhello.top/canvas",
