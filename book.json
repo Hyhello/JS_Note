@@ -111,16 +111,16 @@
             "options": [
                 {
                     "value": "https://book.hyhello.top/canvas",
-                    "text": "canvas",
+                    "text": "canvas动画",
                     "selected": true
                 },
                 {
                     "value": "https://book.hyhello.top/gulp",
-                    "text": "gulp"
+                    "text": "gulp配置"
                 },
                 {
                     "value": "https://blog.hyhello.top",
-                    "text": "blog"
+                    "text": "博客"
                 }
             ]
         }
