@@ -1,4 +1,4 @@
-# canvas元素
+# Canvas元素
 
 ## 前言
 
