@@ -11,6 +11,9 @@
             "Home": "https://book.hyhello.top"
         }
     },
+    "styles": {
+        "website": "assets/styles/website.css"
+    },
     "plugins": [
         "-lunr",
         "-search",
@@ -98,8 +101,8 @@
             "tag": "b"
         },
         "favicon": {
-            "shortcut": "./favicon.ico",
-            "bookmark": "./favicon.ico"
+            "shortcut": "assets/images/favicon.ico",
+            "bookmark": "assets/images/favicon.ico"
         },
         "terminal": {
             "copyButtons": true,
