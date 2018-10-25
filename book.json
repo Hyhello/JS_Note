@@ -83,7 +83,7 @@
             "skipFirstH1": true
         },
         "edit-link": {
-            "base": "https://github.com/Hyhello/JS_Note/edit/canvas/docs",
+            "base": "https://github.com/Hyhello/JS_Note/edit/gulp/docs",
             "label": "编辑当前页"
         },
         "anchor-navigation-ex": {

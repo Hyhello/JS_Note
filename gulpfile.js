@@ -24,7 +24,7 @@ gulp.task('syncBookJson', function () {
             if (!~value.indexOf(baseDir)) {
                 isChange = true;
                 valueList = value.split('/');
-                return valueList.slice(0, valueList.length + path.basename(value) === path.basename(root) ? -2 : -1).join('/') + '/' + baseDir;
+                return valueList.slice(0, valueList.length + (path.basename(value) === path.basename(root) ? -2 : -1)).join('/') + '/' + baseDir;
             }
         }
         return value;
