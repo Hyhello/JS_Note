@@ -49,7 +49,6 @@
         "graph@^0.1.0",
         "chart@^0.2.0"
     ],
-
     "pluginsConfig": {
         "theme-default": {
             "showLevel": true
@@ -84,7 +83,7 @@
             "skipFirstH1": true
         },
         "edit-link": {
-            "base": "https://github.com/Hyhello/JS_Note/edit/master",
+            "base": "https://github.com/Hyhello/JS_Note/edit/canvas/docs",
             "label": "编辑当前页"
         },
         "anchor-navigation-ex": {
