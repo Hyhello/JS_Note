@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var fs = require('fs');
+var path = require('path');
 var del = require('del');
 var shelljs = require('shelljs');
 var minifycss = require('gulp-minify-css');
@@ -10,10 +12,31 @@ var ghPages = require('gh-pages');
 var autoprefixer = require('gulp-autoprefixer');
 var root = require('./book.json').root;
 var buildDir = './dist';
-
 var branch = shelljs.exec('git branch | grep "*"', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
 
-gulp.task('init', function () {
+gulp.task('syncBookJson', function () {
+    var isChange = false;
+    var valueList = [];
+    var baseDir = branch + '/' + path.basename(root);
+    var book = JSON.parse(fs.readFileSync(__dirname + '/' + 'book.json').toString());
+    book = JSON.stringify(book, function (key, value) {
+        if (key === 'base' && typeof value === 'string') {
+            if (!~value.indexOf(baseDir)) {
+                isChange = true;
+                valueList = value.split('/');
+                return valueList.slice(0, valueList.length + path.basename(value) === path.basename(root) ? -2 : -1).join('/') + '/' + baseDir;
+            }
+        }
+        return value;
+    }, 4);
+    if (isChange) {
+        fs.writeFileSync(path.join(__dirname, 'book.json'), book, 'utf-8', function (err) {
+            if (err) console.log(err);
+        });
+    }
+});
+
+gulp.task('init', ['syncBookJson'], function () {
     if (!shelljs.test('-d', root)) {
         shelljs.echo('-e', '正在生成目录：' + root);
         shelljs.mkdir(root);
@@ -70,7 +93,7 @@ gulp.task('clean:dist', function (cb) {
 });
 
 // clean
-gulp.task('clean', function (cb) {
+gulp.task('clean', ['syncBookJson'], function (cb) {
     return del(['./_book'], cb);
 });
 
