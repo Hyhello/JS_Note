@@ -9,7 +9,9 @@
         body {
             background-color: #aaaaaa;
         }
-        #canvas {
+        #linear,
+        #radial,
+        #pattern {
             margin-left: 20px;
             margin-right: 0;
             margin-bottom: 20px;
@@ -19,13 +21,36 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="800" height="520">Canvas not supported</canvas>
+    <canvas id="linear" width="800" height="520">Canvas not supported</canvas>
+    <canvas id="radial" width="800" height="520">Canvas not supported</canvas>
+    <canvas id="pattern" width="800" height="520">Canvas not supported</canvas>
     <script>
-        var canvas = document.getElementById('canvas'),
-            ctx = canvas.getContext('2d');
+        var radialCanvas = document.getElementById('radial');
+        var linearCtx = document.getElementById('linear').getContext('2d');
+        var radialCtx = radialCanvas.getContext('2d');
+        var patternCtx = document.getElementById('pattern').getContext('2d');
 
-            ctx.beginPath();
+            // 线性渐变
+            linearCtx.beginPath();
+            var linearGradient = linearCtx.createLinearGradient(0, 0, linearCtx.canvas.width, 0);
+            linearGradient.addColorStop(0, 'blue');
+            linearGradient.addColorStop(1, 'red');
+            linearCtx.fillStyle = linearGradient;
+            linearCtx.fillRect(linearCtx.canvas.width / 4, linearCtx.canvas.height / 4, linearCtx.canvas.width / 2, linearCtx.canvas.height / 2);
 
+            // 放射渐变
+            radialCtx.beginPath();
+            var radialGradient = radialCtx.createRadialGradient(radialCtx.canvas.width / 2, 0, 10, radialCtx.canvas.width / 2, radialCtx.canvas.height, 50);
+            radialGradient.addColorStop(0, 'green');
+            radialGradient.addColorStop(1, 'white');
+            radialCtx.fillStyle = radialGradient;
+            radialCtx.fillRect(0, 0, radialCtx.canvas.width, radialCtx.canvas.height);
+
+            // 图案
+            patternCtx.beginPath();
+            var patternEl = patternCtx.createPattern(radialCanvas, 'repeat');
+            patternCtx.fillStyle = patternEl;
+            patternCtx.fillRect(0, 0, patternCtx.canvas.width, patternCtx.canvas.height);
     </script>
 </body>
 </html>
