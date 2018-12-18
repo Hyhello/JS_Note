@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>路径</title>
+    <style>
+        body {
+            background-color: #aaaaaa;
+        }
+        #canvas {
+            margin-left: 20px;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="520">Canvas not supported</canvas>
+    <script>
+        var canvas = document.getElementById('canvas'),
+            ctx = canvas.getContext('2d');
+
+            ctx.beginPath();
+            ctx.strokeStyle = 'yellow';
+            ctx.lineWidth = 5;
+            ctx.shadowColor = 'red';
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.shadowBlur = 10;
+            ctx.moveTo(0, 10);
+            ctx.lineTo(ctx.canvas.width, 10);
+            ctx.stroke();
+
+            ctx.beginPath();               // 可对比有此属性，无此属性,  beginPath 会清除上面的subPath。没有beginPath，则上面路径会被绘制两次。
+            ctx.strokeStyle = '#cccccc';
+            ctx.lineWidth = 5;
+            ctx.moveTo(0, 40);
+            ctx.lineTo(ctx.canvas.width, 40);
+            ctx.stroke();
+
+            // 备注：因为阴影是合成上去的，所以后都会有阴影， 最好的解决办法就是采用save, restore
+    </script>
+</body>
+</html>

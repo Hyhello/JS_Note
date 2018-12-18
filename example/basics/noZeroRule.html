@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>非零环绕规则</title>
+    <style>
+        body {
+            background-color: #aaaaaa;
+        }
+        #canvas1,
+        #canvas2 {
+            margin-left: 20px;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas1" width="800" height="520">Canvas not supported</canvas>
+    <canvas id="canvas2" width="800" height="520">Canvas not supported</canvas>
+    <script>
+        var ctx1 = document.getElementById('canvas1').getContext('2d'),
+            ctx2 = document.getElementById('canvas2').getContext('2d');
+
+            // functin
+            function rect (ctx, x, y, w, h, bool) {
+                if (bool) {
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + w, y);
+                    ctx.lineTo(x + w, y + h);
+                    ctx.lineTo(x, y + h);
+                } else {
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x, y + h);
+                    ctx.lineTo(x + w, y + h);
+                    ctx.lineTo(x + w, y);
+                }
+                ctx.closePath();
+            };
+
+
+            ctx1.beginPath();
+            // 同方向 则fill 为 2
+            // ctx1.shadowColor = 'red';
+            // ctx1.shadowOffsetX = '5';
+            // ctx1.shadowOffsetY = '5';
+            // ctx1.shadowBlur = 20;
+            // ctx1.arc(ctx1.canvas.width / 2, ctx1.canvas.height / 2, 200, 0, Math.PI * 2, false); // 顺时针
+            // ctx1.arc(ctx1.canvas.width / 2, ctx1.canvas.height / 2, 100, 0, Math.PI * 2, false); // 顺时针
+            // ctx1.fill();
+            ctx1.shadowColor = 'red';
+            ctx1.shadowOffsetX = '5';
+            ctx1.shadowOffsetY = '5';
+            ctx1.shadowBlur = 20;
+            rect(ctx1, ctx1.canvas.width / 4, ctx1.canvas.height / 4, ctx1.canvas.width / 2, ctx1.canvas.height / 2, false); // 逆时针
+            rect(ctx1, ctx1.canvas.width / 4, ctx1.canvas.height / 4, ctx1.canvas.width / 4, ctx1.canvas.height / 4, true); // 顺时针
+            ctx1.fill();
+
+            ctx2.beginPath();
+            ctx2.shadowColor = 'red';
+            ctx2.shadowOffsetX = '5';
+            ctx2.shadowOffsetY = '5';
+            ctx2.shadowBlur = 20;
+            // 方向相反 则fill 为0 ，则里面不会进行fill
+            ctx2.arc(ctx2.canvas.width / 2, ctx2.canvas.height / 2, 200, 0, Math.PI * 2, false); // 顺时针
+            ctx2.arc(ctx2.canvas.width / 2, ctx2.canvas.height / 2, 100, 0, Math.PI * 2, true);  // 逆时针
+            ctx2.fill();
+    </script>
+</body>
+</html>
