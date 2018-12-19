@@ -24,6 +24,7 @@
             position: absolute;
             left: 50%;
             top: 50%;
+            margin-left: 1px;
             margin-top: -23px;
             transform: translate(-50%, -50%);
         }
@@ -131,6 +132,7 @@
         function Lottery (el, options) {
             this.$ctx = el.getContext('2d');
             var rect = el.getBoundingClientRect();
+            this.options = options;
             this._centerToCanvasX = rect.width / 2 + rect.left;
             this._centerToCanvasY = rect.height / 2 + rect.top;
             el.width = rect.width;
@@ -141,10 +143,13 @@
         Lottery.prototype = {
             constructor: Lottery,
             _init: function (n) {
+                var len = this.options.length;
                 this.$ctx.clearRect(0, 0, this.$ctx.canvas.width, this.$ctx.canvas.height);
                 this.$ctx.save();
                 this.$ctx.translate(this.$ctx.canvas.width / 2, this.$ctx.canvas.height / 2);
-                this.$ctx.rotate(15 * Math.PI / 180);
+                if ((len / 2) % 2 === 0) {
+                    this.$ctx.rotate(Math.PI / len);
+                }
                 this._baseOutCircle();
                 this._baseMarquee();
                 this._drawPlate(n);
@@ -177,51 +182,32 @@
             },
             // 抽奖盘
             _drawPlate (n) {
-                this.$ctx.rotate(n * Math.PI / 180);
-                for (var i = 0; i < 12; i++) {
+                var len = this.options.length;
+                this.$ctx.rotate(n * Math.PI / 180 - Math.PI + Math.PI * 2 / len);
+                for (var i = 0; i < len; i++) {
                     this.$ctx.beginPath();
                     this.$ctx.save();
-                    this.$ctx.rotate(i * 30 * Math.PI / 180);
-                    this.$ctx.fillStyle = '#FFFFFF';
-                    if (i % 2 === 0) {
-                        this.$ctx.fillStyle = '#FFF4D6';
-                    }
-
-                    // 三角形
-                    this.$ctx.beginPath();
-                    this.$ctx.moveTo(0, 0);
-                    this.$ctx.lineTo(this.$ctx.canvas.height / 4 - 20, 0);
-                    this.$ctx.lineTo(Math.cos(30 * Math.PI / 180) * (this.$ctx.canvas.height / 4 - 20), Math.sin(30 * Math.PI / 180) * (this.$ctx.canvas.height / 4 - 20));
-                    this.$ctx.fill();
-
-                    // 绘制文字
-                    this.$ctx.beginPath();
-                    this.$ctx.save();
-                    this.$ctx.translate(Math.cos(15 * Math.PI / 180) * (this.$ctx.canvas.height / 4 - 60), Math.sin(15 * Math.PI / 180) * (this.$ctx.canvas.height / 4 - 60));
-                    this.$ctx.rotate(105 * Math.PI / 180);
-                    this.$ctx.fillStyle = '#000000';
-                    this.$ctx.font = "20px Georgia";
-                    this.$ctx.textAlign = 'center';
-                    this.$ctx.textBaseline = 'middle';
-                    this.$ctx.fillText('200M', 0, 0);
-                    this.$ctx.restore();
-
-                    // 绘制文字
-                    this.$ctx.beginPath();
-                    this.$ctx.save();
-                    this.$ctx.translate(Math.cos(15 * Math.PI / 180) * (this.$ctx.canvas.height / 4 - 90), Math.sin(15 * Math.PI / 180) * (this.$ctx.canvas.height / 4 - 90));
-                    this.$ctx.rotate(105 * Math.PI / 180);
-                    this.$ctx.fillStyle = '#000000';
-                    this.$ctx.font = "20px Georgia";
-                    this.$ctx.textAlign = 'center';
-                    this.$ctx.textBaseline = 'middle';
-                    this.$ctx.fillText('200M', 0, 0);
-                    this.$ctx.restore();
+                    this.$ctx.rotate(i * 2 * Math.PI / len);
+                    this.$ctx.fillStyle = i % 2 === 0 ? '#FFF4D6' : '#FFFFFF';
 
                     // 弧形
                     this.$ctx.beginPath();
-                    this.$ctx.arc(0, 0, this.$ctx.canvas.height / 4 - 20, 0, Math.PI / 6, false);
+                    this.$ctx.moveTo(0, 0);
+                    this.$ctx.arc(0, 0, this.$ctx.canvas.height / 4 - 20, 0, Math.PI * 2 / len, false);
                     this.$ctx.fill();
+
+                    // 绘制文字
+                    this.$ctx.beginPath();
+                    this.$ctx.save();
+                    this.$ctx.translate(Math.cos(Math.PI / len) * (this.$ctx.canvas.height / 4 - 80), Math.sin(Math.PI / len) * (this.$ctx.canvas.height / 4 - 80));
+                    this.$ctx.rotate(Math.PI / 2 + Math.PI / len);
+                    this.$ctx.fillStyle = this.options[i].color;
+                    this.$ctx.font = "20px Georgia";
+                    this.$ctx.textAlign = 'center';
+                    this.$ctx.textBaseline = 'middle';
+                    this.$ctx.fillText(this.options[i].name, 0, 0);
+                    this.$ctx.restore();
+
                     this.$ctx.restore();
                 }
             },
@@ -230,8 +216,7 @@
                 this.$ctx.fillStyle = '#FFBE04';
                 this.$ctx.arc(0, 0, this.$ctx.canvas.height / 14, 0, Math.PI * 2, false);
                 this.$ctx.fill();
-            },
-            destroy () {}
+            }
         };
 
 
@@ -240,7 +225,56 @@
     </script>
     <script>
         var wheel = document.getElementById('wheel');
-        var lottery = new Lottery(document.getElementById('canvas'));
+        var lottery = new Lottery(document.getElementById('canvas'), [
+            {
+                name: '50M流量包',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '6%'
+            },
+            {
+                name: '10M流量包',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '7%'
+            },
+            {
+                name: '20Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '3%'
+            },
+            {
+                name: '100M流量包',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '5%'
+            },
+            {
+                name: '谢谢参与',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '72%'
+            },
+            {
+                name: '2Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '4%'
+            },
+            {
+                name: '100Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '1%'
+            },
+            {
+                name: '50Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '2%'
+            }
+        ]);
 
         var count = new Count(0, 360, 8000, function (val, status) {
             lottery._init(val * 5);
