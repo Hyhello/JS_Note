@@ -65,13 +65,13 @@
                 name: '2Q币',
                 color: '#000000',
                 bgColor: '#FFFFFF',
-                prob: '1.5%'
+                prob: '61.5%'
             },
             {
                 name: '谢谢参与',
                 color: '#000000',
                 bgColor: '#FFF4D6',
-                prob: '90%'
+                prob: '120%'
             }
         ];
     </script>
@@ -81,14 +81,18 @@
         var lottery = new Lottery(document.getElementById('canvas'), data);
 
         var prob = -1;
+        var isStart = false;
         var count = new Count(0, 360 * 5, 8000, function (val, status) {
             lottery._init(val);
+            isStart = true;
             if (status) {
-                alert(data[prob].name);
+                isStart = false;
+                console.log(data[prob].name);
             }
         });
 
         wheel.onclick = function () {
+            if (isStart) return;
             prob = Lottery.probResult(data, 'prob').index;
             count.update(360 * 5 + 360 - prob * 360 / data.length);
         };

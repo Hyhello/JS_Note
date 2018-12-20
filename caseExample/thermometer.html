@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简单的温度计</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #CCCCCC;
+        }
+        .canvas-panel {
+            margin: 10px auto;
+            width: 300px;
+            height: 600px;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            background-color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-panel">
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+
+        // 温度计
+        function Meter (el, options = {}) {
+            var rect = el.getBoundingClientRect();
+            this._ctx = el.getContext('2d');
+            el.width = rect.width;
+            el.height = rect.height;
+            // 检查配置
+            this.constructor.checkConf(options);
+            // 初始化配置
+            this._conf = this.constructor.extend(true, options, this.constructor.CONF);
+
+            if (this._conf.maxTemp <= this._conf.minTemp) {
+                throw new Error('[Meter] options property：maxTemp must gt minTemp');
+            }
+
+            if ((this._conf.maxTemp - this._conf.minTemp) % this._conf.scaleOffset !== 0) {
+                throw new Error('[Meter] options property：scaleOffset must keep [(maxTemp - minTemp) % scaleOffset === 0]');
+            }
+
+            // 调整配置
+            this._conf.direction = this._conf.direction === 'h' ? 'h' : 'v';
+            this._conf.tempCap = this._conf.tempCap === 'round' ? 'round' : 'butt';
+            this._conf.ballRadius = Math.max(this._conf.ballRadius, this._conf.tempWidth / 2);
+            this._conf.tempVal = Math.max(this._conf.minTemp, Math.min(this._conf.tempVal, this._conf.maxTemp));
+
+            // 温度计到球的衔接距离
+            this._conf.extendOffset = this._conf.ballRadius - Math.sqrt(this._conf.ballRadius * this._conf.ballRadius - this._conf.tempWidth * this._conf.tempWidth / 4);
+            // 初始化
+            this._init();
+        }
+
+        Meter.checkConf = function (options) {
+            var CONF = this.CONF;
+            Object.keys(CONF).forEach(function (item, key) {
+                var type = typeof CONF[item];
+                if (options[item] && typeof options[item] !== type) {
+                    throw new TypeError('[Meter] options property：' + item + ' is not a ' + type);
+                }
+            });
+        };
+
+        Meter.extend = function () {
+            var target = arguments[0];
+            var argList = Array.prototype.slice.call(arguments, 1);
+            var argLen = argList.length;
+            target = typeof target === 'boolean' ? {} : target;
+            while (argLen--) {
+                var resource = argList[argLen];
+                for (var i in resource) {
+                    if (resource.hasOwnProperty(i)) {
+                        target[i] = resource[i];
+                    }
+                }
+            }
+            return target;
+        };
+
+        Meter.CONF = {
+            direction: 'v',                          // 温度计展现形式，默认值为：v【竖】，可取：h【横向】，v【竖向】
+            margin: 20,                              // 温度计距离顶部及底部的margin距离，默认值为20
+            offset: 5,                               // 温度计管距离刻度距离
+            ballRadius: 20,                          // 底部温度球半径，默认值10，当showBall 为true，生效
+            tempVal: 26,                             // 默认的温度值，默认值为26
+            tempWidth: 20,                           // 温度计管宽度，默认值为20
+            maxTemp: 100,                            // 最大温度值，默认值为100
+            minTemp: 0,                              // 最小温度值，默认值为0
+            tempCap: 'butt',                         // 温度计头部样式，默认值为：butt
+            tempBgColor: '#cccccc',                  // 温度计背景色，默认值为: #CCCCCC
+            tempActiveBgColor: '#888888',            // 温度计活动背景色，默认值为：#888888
+            tempBorderColor: '#cccccc',              // 温度计边框颜色，当borderWidth 不为0时生效。
+            scaleColor: '#888888',                   // 温度计刻度颜色
+            scaleOffset: 10,                         // 温度计刻度跨度
+            tempBorderWidth: 0,                      // 温度计边框，默认值为0
+            showLabel: true,                         // 是否显示温度标签，默认值为true
+            showBall: true                           // 是否显示底部温度球，默认值为true
+        };
+
+        Meter.prototype = {
+            constructor: Meter,
+            _init: function () {
+                this._ctx.beginPath();
+                this._ctx.save();
+                this._ctx.translate(this._ctx.canvas.width / 2, this._ctx.canvas.height - this._conf.margin);
+
+                // 内容部分
+                this._render();
+
+                this._ctx.restore();
+            },
+            _render: function () {
+                this._drawBaseShell();
+                this._drawBaseInside();
+                this._drawScale();
+            },
+            // 基准
+            _drawBaseShell: function () {
+                this._ctx.save();
+                this._ctx.translate(0, -this._conf.ballRadius);
+                this._ctx.fillStyle = this._conf.tempBgColor;
+
+                // 温度计管
+                this._ctx.beginPath();
+                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, (this._conf.margin + this._conf.ballRadius) * 2 - this._ctx.canvas.height);
+
+                // 绘制扩展
+                this._ctx.beginPath();
+                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, this._conf.extendOffset);
+
+                // 温度计底部球
+                this._ctx.beginPath();
+                this._ctx.arc(0, 0, this._conf.ballRadius, 0, 2 * Math.PI, false);
+                this._ctx.fill();
+
+                this._ctx.restore();
+            },
+            // 里面
+            _drawBaseInside: function (n) {
+                this._ctx.save();
+                this._ctx.translate(0, -this._conf.ballRadius);
+                this._ctx.fillStyle = this._conf.tempActiveBgColor;
+
+                // 温度计管
+                this._ctx.beginPath();
+                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, (this._conf.margin + this._conf.ballRadius) * 2 + 100 - this._ctx.canvas.height);
+
+                // 绘制扩展
+                this._ctx.beginPath();
+                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, this._conf.extendOffset);
+
+                // 温度计底部球
+                this._ctx.beginPath();
+                this._ctx.arc(0, 0, this._conf.ballRadius, 0, 2 * Math.PI, false);
+                this._ctx.fill();
+
+                this._ctx.restore();
+            },
+            // 刻度
+            _drawScale: function () {
+                this._ctx.save();
+                this._ctx.translate(this._conf.tempWidth / 2 + this._conf.offset, -this._conf.ballRadius * 2);
+
+                // 线段
+                this._ctx.beginPath();
+                this._ctx.strokeStyle = this._conf.scaleColor;
+                this._ctx.lineWidth = 1;
+                this._ctx.moveTo(0.5, 0);
+                this._ctx.lineTo(0.5, (this._conf.margin + this._conf.ballRadius) * 2 - this._ctx.canvas.height);
+                this._ctx.stroke();
+
+                // 刻度
+                var total = this._conf.maxTemp - this._conf.minTemp;
+                for (var i = 0; i <= total; i++) {
+                    this._ctx.save();
+                    this._ctx.beginPath();
+                    this._ctx.translate(0, i * ((this._conf.margin + this._conf.ballRadius) * 2 - this._ctx.canvas.height) / total);
+                    this._ctx.strokeStyle = this._conf.scaleColor;
+                    this._ctx.moveTo(0.5, -0.5);
+                    if (i % this._conf.scaleOffset === 0) {
+                        this._ctx.lineTo(10.5, -0.5);
+                        this._ctx.textAlign = 'left';
+                        this._ctx.textBaseline = 'middle';
+                        this._ctx.fillText(i + this._conf.minTemp, 15.5, -0.5);
+                    } else {
+                        this._ctx.lineTo(5.5, -0.5);
+                    }
+                    this._ctx.stroke();
+                    this._ctx.restore();
+                }
+
+                this._ctx.restore();
+            }
+        };
+
+        var meter = new Meter(document.getElementById('canvas'), {
+            direction: 'v',                          // 温度计展现形式，默认值为：v【竖】，可取：h【横向】，v【竖向】
+            offset: 5,                               // 温度计距离顶部及底部的margin距离，默认值为20
+            ballRadius: 10,                          // 底部温度球半径，默认值10，当showBall 为true，生效
+            tempVal: 26,                             // 默认的温度值，默认值为26
+            tempWidth: 10,                           // 温度计管宽度，默认值为20
+            maxTemp: 80,                             // 最大温度值，默认值为100
+            minTemp: -20,                            // 最小温度值，默认值为0
+            tempCap: 'butt',                         // 温度计头部样式，默认值为：butt
+            tempBgColor: '#cccccc',                  // 温度计背景色，默认值为: #CCCCCC
+            tempActiveBgColor: '#888888',            // 温度计活动背景色，默认值为：#888888
+            tempBorderColor: '#cccccc',              // 温度计边框颜色，当borderWidth 不为0时生效。
+            tempBorderWidth: 0,                      // 温度计边框，默认值为0
+            showLabel: true,                         // 是否显示温度标签，默认值为true
+            showBall: true                           // 是否显示底部温度球，默认值为true
+        });
+        console.log(meter);
+    </script>
+</body>
+</html>

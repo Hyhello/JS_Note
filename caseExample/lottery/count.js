@@ -13,6 +13,7 @@ function Count (startVal, endVal, duration, callback) {
         !this.constructor.ensureNumber(this.duration)
     ) {
         console.error(`[Count] startVal (${startVal}) or endVal (${endVal}) or duration (${duration}) is not a number`);
+        return;
     }
     this.callback = callback || function () {};
     this.countDown = this.startVal > this.endVal;
@@ -38,6 +39,7 @@ Count.prototype = {
         this.frameVal = this.countDown
                             ? Math.max(val, this.endVal)
                             : Math.min(val, this.endVal);
+        this.isStart = true;
         if (progress < this.duration) {
             this.timer = window.requestAnimationFrame(this.count.bind(this));
         } else {
@@ -50,7 +52,6 @@ Count.prototype = {
     },
     start: function () {
         if (this.isStart) return;
-        this.isStart = true;
         this.timer = window.requestAnimationFrame(this.count.bind(this));
     },
     update: function (newEndVal) {
@@ -65,7 +66,6 @@ Count.prototype = {
             this.timer = null;
         }
         delete this.startTime;
-        this.isStart = true;
         this.endVal = newEndVal;
         this.startVal = this.frameVal || this.startVal;
         this.duration = this.remaining || this.duration;
@@ -87,11 +87,15 @@ Count.prototype = {
     resume: function () {
         if (this.isStart || !this.isPause) return;
         this.isPause = false;
+        delete this.startTime;
+        this.startVal = this.frameVal;
+        this.duration = this.remaining;
         this.timer = window.requestAnimationFrame(this.count.bind(this));
     },
     pause: function () {
         if (!this.isStart || this.isPause) return;
         this.isPause = true;
+        this.isStart = false;
         if (this.timer) {
             window.cancelAnimationFrame(this.timer);
             this.timer = null;
