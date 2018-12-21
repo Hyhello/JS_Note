@@ -19,7 +19,7 @@
         .canvas-panel {
             margin: 10px auto;
             width: 300px;
-            height: 600px;
+            height: 400px;
         }
         canvas {
             width: 100%;
@@ -57,6 +57,7 @@
             this._conf.direction = this._conf.direction === 'h' ? 'h' : 'v';
             this._conf.tempCap = this._conf.tempCap === 'round' ? 'round' : 'butt';
             this._conf.ballRadius = Math.max(this._conf.ballRadius, this._conf.tempWidth / 2);
+            this._conf.scalePlacement = this.constructor.oneOf(['both', 'left', 'right'], this._conf.scalePlacement) ? this._conf.scalePlacement : 'left';
             this._conf.tempVal = Math.max(this._conf.minTemp, Math.min(this._conf.tempVal, this._conf.maxTemp));
 
             // 温度计到球的衔接距离
@@ -64,6 +65,10 @@
             // 初始化
             this._init();
         }
+
+        Meter.oneOf = function (list, attr) {
+            return new RegExp('\\b' + attr + '\\b').test(list.join(','));
+        };
 
         Meter.checkConf = function (options) {
             var CONF = this.CONF;
@@ -106,6 +111,7 @@
             tempBorderColor: '#cccccc',              // 温度计边框颜色，当borderWidth 不为0时生效。
             scaleColor: '#888888',                   // 温度计刻度颜色
             scaleOffset: 10,                         // 温度计刻度跨度
+            scalePlacement: 'left',                  // 温度计指针位置，默认值：left,【left, right, both】
             tempBorderWidth: 0,                      // 温度计边框，默认值为0
             showLabel: true,                         // 是否显示温度标签，默认值为true
             showBall: true                           // 是否显示底部温度球，默认值为true
@@ -124,63 +130,81 @@
                 this._ctx.restore();
             },
             _render: function () {
+                var i = 0;
+                var signList = this._conf.scalePlacement === 'both'
+                                    ? [-1, 1]
+                                    : this._conf.scalePlacement === 'left' ? [-1] : [1];
+                var ii = signList.length;
+
                 this._drawBaseShell();
                 this._drawBaseInside();
-                this._drawScale();
+
+                // 渲染刻度
+
+                for (; i < ii; i++) {
+                    this._drawBaseScale(signList[i]);
+                }
             },
             // 基准
             _drawBaseShell: function () {
+                var radius = this._conf.showBall ? this._conf.ballRadius : 0;
                 this._ctx.save();
-                this._ctx.translate(0, -this._conf.ballRadius);
+                this._ctx.translate(0, -radius);
                 this._ctx.fillStyle = this._conf.tempBgColor;
 
                 // 温度计管
                 this._ctx.beginPath();
-                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, (this._conf.margin + this._conf.ballRadius) * 2 - this._ctx.canvas.height);
+                this._ctx.fillRect(-this._conf.tempWidth / 2, -radius, this._conf.tempWidth, (this._conf.margin + radius) * 2 - this._ctx.canvas.height);
 
-                // 绘制扩展
-                this._ctx.beginPath();
-                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, this._conf.extendOffset);
+                if (this._conf.showBall) {
+                    // 绘制扩展
+                    this._ctx.beginPath();
+                    this._ctx.fillRect(-this._conf.tempWidth / 2, -radius, this._conf.tempWidth, this._conf.extendOffset);
 
-                // 温度计底部球
-                this._ctx.beginPath();
-                this._ctx.arc(0, 0, this._conf.ballRadius, 0, 2 * Math.PI, false);
-                this._ctx.fill();
+                    // 温度计底部球
+                    this._ctx.beginPath();
+                    this._ctx.arc(0, 0, radius, 0, 2 * Math.PI, false);
+                    this._ctx.fill();
+                };
 
                 this._ctx.restore();
             },
             // 里面
             _drawBaseInside: function (n) {
+                var radius = this._conf.showBall ? this._conf.ballRadius : 0;
                 this._ctx.save();
-                this._ctx.translate(0, -this._conf.ballRadius);
+                this._ctx.translate(0, -radius);
                 this._ctx.fillStyle = this._conf.tempActiveBgColor;
 
                 // 温度计管
                 this._ctx.beginPath();
-                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, (this._conf.margin + this._conf.ballRadius) * 2 + 100 - this._ctx.canvas.height);
+                this._ctx.fillRect(-this._conf.tempWidth / 2, -radius, this._conf.tempWidth, (this._conf.margin + radius) * 2 + 100 - this._ctx.canvas.height);
 
-                // 绘制扩展
-                this._ctx.beginPath();
-                this._ctx.fillRect(-this._conf.tempWidth / 2, -this._conf.ballRadius, this._conf.tempWidth, this._conf.extendOffset);
+                if (this._conf.showBall) {
+                    // 绘制扩展
+                    this._ctx.beginPath();
+                    this._ctx.fillRect(-this._conf.tempWidth / 2, -radius, this._conf.tempWidth, this._conf.extendOffset);
 
-                // 温度计底部球
-                this._ctx.beginPath();
-                this._ctx.arc(0, 0, this._conf.ballRadius, 0, 2 * Math.PI, false);
-                this._ctx.fill();
+                    // 温度计底部球
+                    this._ctx.beginPath();
+                    this._ctx.arc(0, 0, radius, 0, 2 * Math.PI, false);
+                    this._ctx.fill();
+                };
 
                 this._ctx.restore();
             },
             // 刻度
-            _drawScale: function () {
+            _drawBaseScale: function (n) {
+                var radius = this._conf.showBall ? this._conf.ballRadius : 0;
                 this._ctx.save();
-                this._ctx.translate(this._conf.tempWidth / 2 + this._conf.offset, -this._conf.ballRadius * 2);
+                this._ctx.translate((this._conf.tempWidth / 2 + this._conf.offset) * n, -radius * 2);
 
                 // 线段
                 this._ctx.beginPath();
                 this._ctx.strokeStyle = this._conf.scaleColor;
                 this._ctx.lineWidth = 1;
-                this._ctx.moveTo(0.5, 0);
-                this._ctx.lineTo(0.5, (this._conf.margin + this._conf.ballRadius) * 2 - this._ctx.canvas.height);
+                this._ctx.moveTo(n * 0.5, 0);
+                this._ctx.lineTo(n * 0.5, (this._conf.margin + radius) * 2 - this._ctx.canvas.height);
                 this._ctx.stroke();
 
                 // 刻度
@@ -188,16 +212,16 @@
                 for (var i = 0; i <= total; i++) {
                     this._ctx.save();
                     this._ctx.beginPath();
-                    this._ctx.translate(0, i * ((this._conf.margin + this._conf.ballRadius) * 2 - this._ctx.canvas.height) / total);
+                    this._ctx.translate(0, i * ((this._conf.margin + radius) * 2 - this._ctx.canvas.height) / total);
                     this._ctx.strokeStyle = this._conf.scaleColor;
-                    this._ctx.moveTo(0.5, -0.5);
+                    this._ctx.moveTo(n * 0.5, -0.5);
                     if (i % this._conf.scaleOffset === 0) {
-                        this._ctx.lineTo(10.5, -0.5);
-                        this._ctx.textAlign = 'left';
+                        this._ctx.lineTo(n * 10.5, -0.5);
+                        this._ctx.textAlign = n === -1 ? 'right' : 'left';
                         this._ctx.textBaseline = 'middle';
-                        this._ctx.fillText(i + this._conf.minTemp, 15.5, -0.5);
+                        this._ctx.fillText(i + this._conf.minTemp, n * 15.5, -0.5);
                     } else {
-                        this._ctx.lineTo(5.5, -0.5);
+                        this._ctx.lineTo(n * 5.5, -0.5);
                     }
                     this._ctx.stroke();
                     this._ctx.restore();
@@ -220,6 +244,7 @@
             tempActiveBgColor: '#888888',            // 温度计活动背景色，默认值为：#888888
             tempBorderColor: '#cccccc',              // 温度计边框颜色，当borderWidth 不为0时生效。
             tempBorderWidth: 0,                      // 温度计边框，默认值为0
+            scalePlacement: 'both',
             showLabel: true,                         // 是否显示温度标签，默认值为true
             showBall: true                           // 是否显示底部温度球，默认值为true
         });
