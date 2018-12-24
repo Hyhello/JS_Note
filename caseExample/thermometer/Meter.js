@@ -1,4 +1,5 @@
-// ***** 动画 function
+(function (global) {
+    // ***** 动画 function
 function Count (startVal, endVal, duration, callback) {
     this.timer = null;
     this.frameVal = null;
@@ -17,7 +18,7 @@ function Count (startVal, endVal, duration, callback) {
     }
     this.callback = callback || function () {};
     this.countDown = this.startVal > this.endVal;
-}
+};
 
 Count.ensureNumber = function (val) {
     return !isNaN(val) && typeof val === 'number';
@@ -25,7 +26,7 @@ Count.ensureNumber = function (val) {
 
 Count.easeOutExpo = function (t, b, c, d) {
     return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-}
+};
 
 Count.prototype = {
     constructor: Count,
@@ -104,7 +105,7 @@ Count.prototype = {
 };
 
 // 温度计
-function Meter (el, options = {}) {
+var Meter = function (el, options = {}) {
     var rect = el.getBoundingClientRect();
     this._ctx = el.getContext('2d');
     el.width = rect.width;
@@ -140,7 +141,7 @@ function Meter (el, options = {}) {
     });
 
     this._count.start();
-}
+};
 
 Meter.oneOf = function (list, attr) {
     return new RegExp('\\b' + attr + '\\b').test(list.join(','));
@@ -368,3 +369,5 @@ Meter.prototype = {
         this._ctx.restore();
     }
 };
+global.Meter = Meter;
+} (window));

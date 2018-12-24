@@ -32,10 +32,11 @@
     <div class="canvas-panel">
         <canvas id="canvas"></canvas>
     </div>
-    <script src="./Meter.js"></script>
+    <input type="text" id="text" />
+    <script src="./Meter.min.js"></script>
     <script>
-
-        var meter = new Meter(document.getElementById('canvas'), {
+        var oInp = document.getElementById('text');
+        var options = {
             duration: 3000,
             tempTitle: '温度计',                      // 温度计标题
             titleFont: '20px',                       // 标题文字
@@ -61,9 +62,13 @@
             showLabel: true,                         // 是否显示温度标签，默认值为true
             showCursor: true,                        // 是否显示游标
             showBall: true                           // 是否显示底部温度球，默认值为true
-        });
+        };
+        var meter = new Meter(document.getElementById('canvas'), options);
+        oInp.oninput = function () {
+            meter.update(this.value);
+        };
+        oInp.value = options.tempVal;
 
-        meter.update(-100);
     </script>
 </body>
 </html>
