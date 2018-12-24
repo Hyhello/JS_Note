@@ -134,7 +134,7 @@ var Meter = function (el, options = {}) {
 
     // 初始化动画
     var _this = this;
-    this._count = new Count(0, this._conf.tempVal, this._conf.duration, function (val) {
+    this._count = new Count(this._conf.minTemp, this._conf.tempVal, this._conf.duration, function (val) {
         _this._conf.tempVal = val.toFixed(2);
         // 初始化
         _this._init();
