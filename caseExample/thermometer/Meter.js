@@ -260,6 +260,7 @@ Meter.prototype = {
         this._ctx.beginPath();
         this._ctx.translate(0, this._conf.margin * 2 - this._ctx.canvas.height);
         this._ctx.font = this._conf.titleFont + ' ' + this._conf.scaleFontFamily;
+        this._ctx.fillStyle = this._conf.titleColor;
         this._ctx.textAlign = 'center';
         this._ctx.textBaseline = 'middle';
         this._ctx.fillText(this._conf.tempTitle, 0, 0);
