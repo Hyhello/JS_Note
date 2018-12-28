@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="base.css" />
+    <style>
+        .hype-ui {
+            box-sizing: border-box;
+        }
+
+        .hype-ui-shade {
+            position: fixed;
+            z-index: 2000;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.125);
+        }
+
+        .hype-ui-tips {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 3000;
+            min-width: 120px;
+            padding: 12px 25px;
+            text-align: center;
+            user-select: none;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.125);
+            background-color: #FFFFFF;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="hype-ui hype-ui-shade"></div>
+    <script src="./createElement.js"></script>
+    <script>
+        console.log(createElement('div', {
+            'class': {
+                'hype-ui': true,
+                'hype-ui-shade': false
+            }
+        }, '张三'));
+        console.log(createElement);
+    </script>
+</body>
+</html>

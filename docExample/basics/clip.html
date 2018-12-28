@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>clip</title>
+    <style>
+        body {
+            background-color: #aaaaaa;
+        }
+        canvas {
+            margin-left: 20px;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="520">Canvas not supported</canvas>
+    <script>
+        var ctx = document.getElementById('canvas').getContext('2d');
+
+        // function .....
+        function drawText () {
+            ctx.save();
+            ctx.shadowColor = 'rgba(100, 100, 150, 0.8)';
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            ctx.shadowBlur = 10;
+
+            ctx.fillStyle = 'cornflowerblue';
+            ctx.fillText('HTML5', 20, 250);
+            ctx.strokeStyle = 'yellow';
+            ctx.strokeText('HTML5', 20, 250);
+            ctx.restore();
+        }
+
+        function setClippingRegion (radius) {
+            ctx.beginPath();
+            ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, radius, 0, Math.PI * 2);
+            ctx.clip();
+        }
+
+        function fillCanvas (color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        }
+
+        function endAnimation (loop) {
+            clearInterval(loop);
+            setTimeout(function () {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                drawText();
+            })
+        }
+
+        function drawAnimationFrame (radius) {
+            setClippingRegion(radius);
+            fillCanvas('lightgray');
+            drawText();
+        }
+
+        function animate () {
+            var radius = ctx.canvas.width / 2,
+                loop;
+
+                loop = window.setInterval(function () {
+                    radius -= ctx.canvas.width / 100;
+                    fillCanvas('charcoal');
+
+                    if (radius > 0) {
+                        ctx.save();
+                        drawAnimationFrame(radius);
+                        ctx.restore();
+                    } else {
+                        endAnimation(loop);
+                    }
+                }, 16.7);
+        }
+
+        ctx.canvas.onmousedown = function (e) {
+            animate();
+        };
+
+        ctx.lineWidth = 0.5;
+        ctx.font = '128pt Comic-sans';
+        drawText();
+    </script>
+</body>
+</html>

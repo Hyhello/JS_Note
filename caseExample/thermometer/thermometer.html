@@ -38,9 +38,9 @@
         var oInp = document.getElementById('text');
         var options = {
             duration: 3000,
-            tempTitle: '温度计',                      // 温度计标题
+            tempTitle: 'C',                      // 温度计标题
             titleFont: '20px',                       // 标题文字
-            titleColor: '#f00',                   // 标题字体颜色
+            titleColor: '#888888',                   // 标题字体颜色
             margin: 30,                              // 温度计距离顶部及底部的margin距离，默认值为20
             offset: 5,                               // 温度计管距离刻度距离
             ballRadius: 10,                          // 底部温度球半径，默认值10，当showBall 为true，生效
@@ -55,13 +55,13 @@
             scaleOffset: 10,                         // 温度计刻度跨度
             scaleFont: '14px',                       // 刻度字体大小
             scaleFontFamily: 'Helvetica ',           // 刻度字体
-            scalePlacement: 'left',                  // 温度计指针位置，默认值：left,【left, right, both】
+            scalePlacement: 'both',                  // 温度计指针位置，默认值：left,【left, right, both】
             cursorWidth: 30,                         // 游标宽度
             cursorHeight: 7,                         // 游标高度
             cursorBgColor: '#F08080',                // 游标背景色
             showLabel: true,                         // 是否显示温度标签，默认值为true
-            showCursor: true,                        // 是否显示游标
-            showBall: false                           // 是否显示底部温度球，默认值为true
+            showCursor: false,                        // 是否显示游标
+            showBall: true                           // 是否显示底部温度球，默认值为true
         };
         var meter = new Meter(document.getElementById('canvas'), options);
         oInp.oninput = function () {

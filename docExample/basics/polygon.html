@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>多边形</title>
+    <style>
+        body {
+            background-color: #aaaaaa;
+        }
+        canvas {
+            margin-left: 20px;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="520">Canvas not supported</canvas>
+    <script>
+        var ctx = document.getElementById('canvas').getContext('2d');
+
+        CanvasRenderingContext2D.prototype.centePolygon = CanvasRenderingContext2D.prototype.centePolygon || function (centerX, centerY, radius, sides, startAngle = 0, counterclockwise = false) {
+            var ii;
+            var i = 0;
+            var points = [];
+            sides = Math.max(3, sides);
+            for (i = 0; i < sides; i++) {
+                points.push({
+                    x: centerX - radius * Math.cos(startAngle),
+                    y: centerY - radius * Math.sin(startAngle)
+                });
+                startAngle += Math.PI * 2 / sides;
+            }
+            if (counterclockwise) points = points.reverse();
+            this.beginPath();
+            this.moveTo(points[0].x, points[0].y);
+            for (i = 1, ii = points.length; i < ii; i++) {
+                this.lineTo(points[i].x, points[i].y);
+            }
+            this.closePath();
+        };
+
+        var i = 3;
+        var step = function () {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.beginPath();
+            ctx.centePolygon(ctx.canvas.width / 2, ctx.canvas.height / 2, i * 5, i, 0, false);
+            ctx.stroke();
+            if (i++ <= 50) {
+                setTimeout(step, 300);
+            }
+        };
+        step();
+    </script>
+</body>
+</html>

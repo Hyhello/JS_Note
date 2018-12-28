@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>塞尔曲线</title>
+    <style>
+        body {
+            background-color: #aaaaaa;
+        }
+        canvas {
+            margin-left: 20px;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas1" width="800" height="520">Canvas not supported</canvas>
+    <canvas id="canvas2" width="800" height="520">Canvas not supported</canvas>
+    <script>
+        var ctx1 = document.getElementById('canvas1').getContext('2d');
+        var ctx2 = document.getElementById('canvas2').getContext('2d');
+
+        // 二次方贝塞尔曲线
+        ctx1.fillStyle = 'cornflowerblue';
+        ctx1.strokeStyle = 'yellow';
+        ctx1.shadowColor = 'rgba(50, 50, 50, 1.0)';
+        ctx1.shadowOffsetX = 2;
+        ctx1.shadowOffsetY = 2;
+        ctx1.shadowBlur = 4;
+
+        ctx1.lineWidth = 20;
+        ctx1.lineCap = 'round';
+
+        ctx1.beginPath();
+        ctx1.moveTo(120.5, 130);
+        ctx1.quadraticCurveTo(150.8, 130, 160.6, 150.5);
+        ctx1.quadraticCurveTo(190, 250, 210.5, 160.5);
+        ctx1.quadraticCurveTo(240, 100.5, 290, 70.5);
+        ctx1.stroke();
+
+        // 三次方贝塞尔曲线
+        ctx2.fillStyle = 'cornflowerblue';
+        ctx2.strokeStyle = 'yellow';
+        ctx2.shadowColor = 'rgba(50, 50, 50, 1.0)';
+        ctx2.shadowOffsetX = 2;
+        ctx2.shadowOffsetY = 2;
+        ctx2.shadowBlur = 4;
+
+        ctx2.lineWidth = 20;
+        ctx2.lineCap = 'round';
+        ctx2.beginPath();
+        ctx2.moveTo(120.5, 130);
+        ctx2.bezierCurveTo(90.8, 130, 160.6, 150.5, 130, 70.5);
+        ctx2.stroke();
+    </script>
+</body>
+</html>

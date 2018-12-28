@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>globalCompositeOPeration</title>
+    <style>
+        body {
+            background-color: #aaaaaa;
+        }
+        canvas {
+            margin-left: 20px;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background-color: #FFFFFF;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h3 id="title">这是默认值，他表示绘制的图形将画在现有画布之上</h3>
+    <canvas id="canvas" width="800" height="520">Canvas not supported</canvas>
+    <select id="compositingSelect">
+        <option value="source-atop">source-atop</option>
+        <option value="source-in">source-in</option>
+        <option value="source-out">source-out</option>
+        <option value="source-over">source-over</option>
+        <option value="destination-atop">destination-atop</option>
+        <option value="destination-in">destination-in</option>
+        <option value="destination-out">destination-out</option>
+        <option value="destination-over">destination-over</option>
+        <option value="lighter">lighter</option>
+        <option value="copy">copy</option>
+        <option value="xor">xor</option>
+    </select>
+    <script>
+        var mapOptions = {
+            'source-atop': '这个操作会将源绘制在目标之上，但是在重叠区域上两者都是不透明的。绘制在其他位置的目标是不透明的，但源是透明的。',
+            'source-in': '在源于目标重叠的区域只绘制源，而不重叠的部分编程透明的。',
+            'source-out': '在与目标不重叠的区域上绘制源，其他部分都变成透明的。',
+            'source-over': '这是默认值，他表示绘制的图形将画在现有画布之上',
+            'destination-atop': '这个操作与source-atop相反，目标绘制在源之上',
+            'destination-in': '这个操作与source-in相反，在源于目标重叠的区域保留目标。而不重叠的部分都变成透明的。',
+            'destination-out': '在与源不重叠的区域上保留目标。其他部分都变成透明的。',
+            'destination-over': '这个操作的值与前一个值相反，所以现在目标绘制在源之上',
+            'lighter': '这个值与顺序无关，如果源与目标重叠，就将两者的颜色值相加。得到的颜色值的最大取值为255，结果就为白色。',
+            'copy': '这个值与顺序无关，只绘制源，覆盖掉目标。',
+            'xor': '这个值与顺序无关，只绘制出不重叠的源与目标区域。所有重叠的部分都变成透明的'
+        };
+        var title = document.getElementById('title');
+        var context = document.getElementById('canvas').getContext('2d');
+        var selectElement = document.getElementById('compositingSelect');
+
+        // Functions。。。。。。
+        function drawText () {
+            context.save();
+
+            context.shadowColor = 'rgba(100, 100, 150, 0.8)';
+            context.shadowOffsetX = 5;
+            context.shadowOffsetY = 5;
+            context.shadowBlur = 10;
+            context.fillStyle = 'cornflowerblue';
+            context.fillText('HTML5', 20, 250);
+            context.strokeStyle = 'yellow';
+            context.strokeText('HTML5', 20, 250);
+            context.stroke();
+            context.restore();
+        };
+
+        function windowToCanvas (canvas, x, y) {
+            var bbox = canvas.getBoundingClientRect();
+            return {
+                x: x - bbox.left * (canvas.width / bbox.width),
+                y: y - bbox.top * (canvas.height / bbox.height)
+            };
+        }
+
+        context.canvas.onmousemove = function (e) {
+            var loc = windowToCanvas(context.canvas, e.clientX, e.clientY);
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            drawText();
+            context.save();
+            context.globalCompositeOperation = selectElement.value;
+            context.beginPath();
+            context.arc(loc.x, loc.y, 100, 0, Math.PI * 2, false);
+            context.fillStyle = 'orange';
+
+            context.fill();
+            context.restore();
+        };
+
+        selectElement.onchange = function (e) {
+            title.innerHTML = mapOptions[this.value];
+        };
+
+        selectElement.selectedIndex = 3;
+        title.innerHTML = mapOptions[selectElement.value];
+        context.lineWidth = 0.5;
+        context.font = '128pt Comic-sans';
+        drawText();
+    </script>
+</body>
+</html>
