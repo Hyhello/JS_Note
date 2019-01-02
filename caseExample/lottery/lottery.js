@@ -3,11 +3,36 @@ function Lottery (el, options) {
     this.$ctx = el.getContext('2d');
     var rect = el.getBoundingClientRect();
     this.options = options;
+
     this._centerToCanvasX = rect.width / 2 + rect.left;
     this._centerToCanvasY = rect.height / 2 + rect.top;
     el.width = rect.width;
     el.height = rect.height;
-    this._init(0);
+    this._init(0, 0);
+};
+
+Lottery.originCONF = Lottery.CONF = {
+    marqueeInterval: 500,               // 跑马灯间隔，单位ms
+    marqueeActiveColor: '#FF0000',      // 跑马灯活动颜色
+    marqueeColor: '#FFFFFF',            // 跑马灯默认颜色
+    marqueeActiveRadius: 5,             // 跑马灯活动颜色
+    marqueeRadius: 4,                   // 跑马灯默认颜色
+};
+
+// 配置
+Lottery.configure = function (conf) {
+    this.checkConf(conf);
+    Lottery.CONF = Object.assign({}, Lottery.CONF, conf);
+};
+
+Lottery.checkConf = function (options) {
+    var CONF = this.CONF;
+    Object.keys(CONF).forEach(function (item, key) {
+        var type = typeof CONF[item];
+        if (options[item] && typeof options[item] !== type) {
+            throw new TypeError('[Lottery] options property：' + item + ' is not a ' + type);
+        }
+    });
 };
 
 Lottery.toNumber = function (n) {
@@ -56,13 +81,13 @@ Lottery.probResult = function (opt, key) {
 
 Lottery.prototype = {
     constructor: Lottery,
-    _init: function (n) {
+    _init: function (n, _) {
         var len = this.options.length;
         this.$ctx.clearRect(0, 0, this.$ctx.canvas.width, this.$ctx.canvas.height);
         this.$ctx.save();
         this.$ctx.translate(this.$ctx.canvas.width / 2, this.$ctx.canvas.height / 2);
         this._baseOutCircle();
-        this._baseMarquee();
+        this._baseMarquee(_);
         this._drawPlate(n);
         this._clickDrawCicle();
 
@@ -78,16 +103,23 @@ Lottery.prototype = {
         this.$ctx.restore();
     },
     // 跑马灯
-    _baseMarquee: function () {
+    _baseMarquee: function (timeStamp) {
+        var conf = this.constructor.CONF;
+        var even = Math.floor(timeStamp / conf.marqueeInterval) % 2 === 0;
+        var radius;
+        var fillStyle;
         for (var i = 0; i < 24; i++) {
             this.$ctx.beginPath();
             this.$ctx.save();
             this.$ctx.rotate(i * 15 * Math.PI / 180);
-            this.$ctx.fillStyle = '#FFFFFF';
+            radius = conf.marqueeRadius;
+            fillStyle = even ? conf.marqueeColor : conf.marqueeActiveColor;
             if (i % 2 === 0) {
-                this.$ctx.fillStyle = '#F00';
+                radius = conf.marqueeActiveRadius;
+                fillStyle = even ? conf.marqueeActiveColor : conf.marqueeColor;
             }
-            this.$ctx.arc(this.$ctx.canvas.height / 4 - 10, 0, 4, Math.PI * 2, false);
+            this.$ctx.fillStyle = fillStyle;
+            this.$ctx.arc(this.$ctx.canvas.height / 4 - 10, 0, radius, Math.PI * 2, false);
             this.$ctx.fill();
             this.$ctx.restore();
         }

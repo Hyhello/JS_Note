@@ -72,6 +72,42 @@
                 color: '#000000',
                 bgColor: '#FFF4D6',
                 prob: '90%'
+            },
+            {
+                name: '2Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '1.5%'
+            },
+            {
+                name: '谢谢参与',
+                color: '#000000',
+                bgColor: '#FFF4D6',
+                prob: '90%'
+            },
+            {
+                name: '2Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '1.5%'
+            },
+            {
+                name: '谢谢参与',
+                color: '#000000',
+                bgColor: '#FFF4D6',
+                prob: '90%'
+            },
+            {
+                name: '2Q币',
+                color: '#000000',
+                bgColor: '#FFFFFF',
+                prob: '1.5%'
+            },
+            {
+                name: '谢谢参与',
+                color: '#000000',
+                bgColor: '#FFF4D6',
+                prob: '90%'
             }
         ];
     </script>
@@ -83,7 +119,7 @@
         var prob = -1;
         var isStart = false;
         var count = new Count(0, 360 * 5, 8000, function (val, _, status) {
-            lottery._init(val);
+            lottery._init(val, _);
             isStart = true;
             if (status) {
                 isStart = false;
