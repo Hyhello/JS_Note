@@ -33,7 +33,7 @@ Count.easeOutExpo = function (t, b, c, d) {
 Count.prototype = {
     constructor: Count,
     v: '0.0.1',
-    count (timestamp) {
+    count: function (timestamp) {
         var
             // 时间进度
             progress,
@@ -58,13 +58,13 @@ Count.prototype = {
         this.frameVal = this.isStart ? this.frameVal : this.endVal;
         this.callback(this.frameVal, this.originDuration - this.remaining, !this.isStart);
     },
-    start () {
+    start: function () {
         if (this.isStart) return;
         if (this.endVal === this.frameVal) return;
         this.isStart = true;
         this.timer = window.requestAnimationFrame(this.count.bind(this));
     },
-    update (newEndVal) {
+    update: function (newEndVal) {
         newEndVal = Number(newEndVal);
         if (!this.constructor.ensureNumber(newEndVal)) {
             console.error('[CountUp] update() - new endVal is not a number: ' + newEndVal);
@@ -83,7 +83,7 @@ Count.prototype = {
         this.countDown = this.startVal > this.endVal;
         this.start();
     },
-    pause () {
+    pause: function () {
         if (!this.isStart || this.isPause) return;
         this.isPause = true;
         if (this.timer) {
@@ -92,14 +92,14 @@ Count.prototype = {
         }
         delete this.startTime;
     },
-    resume () {
+    resume: function () {
         if (!this.isStart || !this.isPause) return;
         this.isPause = false;
         this.startVal = this.frameVal;
         this.duration = this.remaining;
         this.timer = window.requestAnimationFrame(this.count.bind(this));
     },
-    reset () {
+    reset: function () {
         this.timer = null;
         this.isStart = false;
         this.isPause = false;
