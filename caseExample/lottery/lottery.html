@@ -33,7 +33,7 @@
 <body>
     <canvas id="canvas"></canvas>
     <img class="wheel-pointer" id="wheel" src="./wheel-pointer.png" alt="wheel-pointer" />
-    <script src="./count.js"></script>
+    <script src="../count.js"></script>
     <script src="./lottery.js"></script>
     <script>
         var data = [
@@ -82,11 +82,12 @@
 
         var prob = -1;
         var isStart = false;
-        var count = new Count(0, 360 * 5, 8000, function (val, status) {
+        var count = new Count(0, 360 * 5, 8000, function (val, _, status) {
             lottery._init(val);
             isStart = true;
             if (status) {
                 isStart = false;
+                count.reset();
                 console.log(data[prob].name);
             }
         });

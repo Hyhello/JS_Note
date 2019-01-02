@@ -1,108 +1,115 @@
 (function (global) {
     // ***** 动画 function
-function Count (startVal, endVal, duration, callback) {
-    this.timer = null;
-    this.frameVal = null;
-    this.remaining = null;
-    this.isStart = false;
-    this.isPause = false;
-    this.originStartVal = this.startVal = Number(startVal);
-    this.originEndVal = this.endVal = Number(endVal);
-    this.originDuration = this.duration = Number(duration) || 3000;
-    if (!this.constructor.ensureNumber(this.startVal) ||
-        !this.constructor.ensureNumber(this.endVal) ||
-        !this.constructor.ensureNumber(this.duration)
-    ) {
-        console.error(`[Count] startVal (${startVal}) or endVal (${endVal}) or duration (${duration}) is not a number`);
-        return;
-    }
-    this.callback = callback || function () {};
-    this.countDown = this.startVal > this.endVal;
-};
-
-Count.ensureNumber = function (val) {
-    return !isNaN(val) && typeof val === 'number';
-};
-
-Count.easeOutExpo = function (t, b, c, d) {
-    return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-};
-
-Count.prototype = {
-    constructor: Count,
-    count: function (timestamp) {
-        if (!this.startTime) this.startTime = timestamp;
-        var progress = timestamp - this.startTime;
-        this.remaining = this.duration - progress;
-        var val = this.countDown
-            ? this.startVal - this.constructor.easeOutExpo(progress, 0, this.startVal - this.endVal, this.duration)
-            : this.constructor.easeOutExpo(progress, this.startVal, this.endVal - this.startVal, this.duration);
-        this.frameVal = this.countDown
-                            ? Math.max(val, this.endVal)
-                            : Math.min(val, this.endVal);
-        this.isStart = true;
-        if (progress < this.duration) {
-            this.timer = window.requestAnimationFrame(this.count.bind(this));
-        } else {
-            this.isStart = false;
-        }
-        this.callback(this.frameVal, !this.isStart);
-        if (!this.isStart) {
-            this.reset();
-        }
-    },
-    start: function () {
-        if (this.isStart) return;
-        this.timer = window.requestAnimationFrame(this.count.bind(this));
-    },
-    update: function (newEndVal) {
-        newEndVal = Number(newEndVal);
-        if (!this.constructor.ensureNumber(newEndVal)) {
-            console.error('[CountUp] update() - new endVal is not a number: ' + newEndVal);
+    var Count = function (startVal, endVal, duration = 3000, callback) {
+        var ensureNumber = this.constructor.ensureNumber;
+        startVal = Number(startVal);
+        endVal = Number(endVal);
+        duration = Number(duration);
+        callback = callback || function () {};
+        if (!ensureNumber(startVal) ||
+            !ensureNumber(endVal) ||
+            !ensureNumber(duration)
+        ) {
+            console.error('[Count] startVal (${startVal}) or endVal (${endVal}) or duration (${duration}) is not a number');
             return;
         }
-        if (newEndVal === this.frameVal) return;
-        if (this.timer) {
-            window.cancelAnimationFrame(this.timer);
-            this.timer = null;
-        }
-        delete this.startTime;
-        this.endVal = newEndVal;
-        this.startVal = this.frameVal || this.startVal;
-        this.duration = this.remaining || this.duration;
-        this.countDown = this.startVal > this.endVal;
-        this.timer = window.requestAnimationFrame(this.count.bind(this));
-    },
-    reset: function () {
         this.timer = null;
-        this.frameVal = null;
-        this.remaining = null;
-        delete this.startTime;
         this.isStart = false;
         this.isPause = false;
-        this.startVal = this.originStartVal;
-        this.endVal = this.originEndVal;
-        this.duration = this.originDuration;
+        this.startVal = startVal;
+        this.endVal = endVal;
+        this.originDuration = this.duration = duration;
+        this.callback = callback;
         this.countDown = this.startVal > this.endVal;
-    },
-    resume: function () {
-        if (this.isStart || !this.isPause) return;
-        this.isPause = false;
-        delete this.startTime;
-        this.startVal = this.frameVal;
-        this.duration = this.remaining;
-        this.timer = window.requestAnimationFrame(this.count.bind(this));
-    },
-    pause: function () {
-        if (!this.isStart || this.isPause) return;
-        this.isPause = true;
-        this.isStart = false;
-        if (this.timer) {
-            window.cancelAnimationFrame(this.timer);
+    };
+
+    Count.ensureNumber = function (val) {
+        return !isNaN(val) && typeof val === 'number';
+    };
+
+    // 减速运动
+    Count.easeOutExpo = function (t, b, c, d) {
+        return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+    };
+
+    Count.prototype = {
+        constructor: Count,
+        v: '0.0.1',
+        count (timestamp) {
+            var
+                // 时间进度
+                progress,
+                // 值
+                val;
+            if (!this.startTime) {
+                this.startTime = timestamp;
+            };
+            progress = timestamp - this.startTime;
+            this.remaining = Math.max(this.duration - progress, 0);
+            val = this.countDown
+                            ? this.startVal - this.constructor.easeOutExpo(progress, 0, this.startVal - this.endVal, this.duration)
+                            : this.constructor.easeOutExpo(progress, this.startVal, this.endVal - this.startVal, this.duration);
+            this.frameVal = this.countDown
+                                    ? Math.max(val, this.endVal)
+                                    : Math.min(val, this.endVal);
+            if (progress < this.duration) {
+                this.timer = window.requestAnimationFrame(this.count.bind(this));
+            } else {
+                this.isStart = false;
+            }
+            this.frameVal = this.isStart ? this.frameVal : this.endVal;
+            this.callback(this.frameVal, this.originDuration - this.remaining);
+        },
+        start () {
+            if (this.isStart) return;
+            if (this.endVal === this.frameVal) return;
+            this.isStart = true;
+            this.timer = window.requestAnimationFrame(this.count.bind(this));
+        },
+        update (newEndVal) {
+            newEndVal = Number(newEndVal);
+            if (!this.constructor.ensureNumber(newEndVal)) {
+                console.error('[CountUp] update() - new endVal is not a number: ' + newEndVal);
+                return;
+            }
+            if (this.timer) {
+                window.cancelAnimationFrame(this.timer);
+                this.timer = null;
+                this.isStart = false;
+            }
+            if (newEndVal === this.frameVal) return;
+            delete this.startTime;
+            this.endVal = newEndVal;
+            this.startVal = this.frameVal || this.startVal;
+            this.duration = this.remaining || this.duration;
+            this.countDown = this.startVal > this.endVal;
+            this.start();
+        },
+        pause () {
+            if (!this.isStart || this.isPause) return;
+            this.isPause = true;
+            if (this.timer) {
+                window.cancelAnimationFrame(this.timer);
+                this.timer = null;
+            }
+            delete this.startTime;
+        },
+        resume () {
+            if (!this.isStart || !this.isPause) return;
+            this.isPause = false;
+            this.startVal = this.frameVal;
+            this.duration = this.remaining;
+            this.timer = window.requestAnimationFrame(this.count.bind(this));
+        },
+        reset () {
             this.timer = null;
+            this.isStart = false;
+            this.isPause = false;
+            delete this.startTime;
+            this.duration = this.originDuration;
+            this.countDown = this.startVal > this.endVal;
         }
-    }
-};
+    };
 
 // 温度计
 var Meter = function (el, options = {}) {
