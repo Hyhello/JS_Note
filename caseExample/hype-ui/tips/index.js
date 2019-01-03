@@ -74,20 +74,55 @@
             return target;
         },
 
-        templateTpl = '<div class="hype-ui hype-ui-tips">12312</div>',
-
         hype = {};
 
         hype.version = version;
 
-        // hype._checkConf = function (options) {
-        //     Object.keys();
-        // };
-
         // 提示
         hype.open = function (options = {}) {
             checkConf(options);
-            body.innerHTML += templateTpl;
+            this.$opt = extend(true, OPTIONS, options);
+            this.render();
+        };
+
+        hype.close = function () {};
+
+        hype.render = function () {
+            this.times = 0;
+            if (this.$opt.shade) {
+                if (!this.shade) {
+                    this.shade = createElement('div', {
+                        'class': ['hype-ui', 'hype-ui-shade'],
+                        'attrs': {
+                            times: ++this.times
+                        }
+                    });
+                } else {
+                    this.times = +this.shade.getAttribute('times');
+                    this.shade.setAttribute('times', ++this.times);
+                }
+                document.body.appendChild(this.shade);
+            }
+            var oEl = createElement('div', {
+                'class': ['hype-ui', 'hype-ui-tips', 'layer-anim', 'layer-anim-04'],
+                'once': {
+                    'animationend': function () {
+                        oEl.classList.remove('layer-anim-04');
+                    }
+                }
+            }, this.$opt.message);
+            document.body.appendChild(oEl);
+            var _this = this;
+            setTimeout(function () {
+                document.body.removeChild(oEl);
+                if (_this.times > 1) {
+                    _this.shade.setAttribute('times', --_this.times);
+                } else {
+                    document.body.removeChild(_this.shade);
+                    _this.shade = null;
+                    _this.times = 0;
+                }
+            }, _this.$opt.duration);
         };
 
         window.hype = hype;

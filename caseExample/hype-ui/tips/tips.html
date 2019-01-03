@@ -25,6 +25,7 @@
 
         .hype-ui-tips {
             position: fixed;
+            /* display: block; */
             top: 50%;
             left: 50%;
             z-index: 3000;
@@ -34,21 +35,23 @@
             user-select: none;
             box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.125);
             background-color: #FFFFFF;
-            transform: translate(-50%, -50%);
+            /* transform: translate(-50%, -50%); */
+        }
+        #btn {
+            position: fixed;
+            z-index: 99999;
         }
     </style>
 </head>
 <body>
-    <div class="hype-ui hype-ui-shade"></div>
-    <script src="./createElement.js"></script>
+    <button id="btn">遮罩层</button>
+    <script src="../../createElement.js"></script>
+    <script src="./index.js"></script>
     <script>
-        console.log(createElement('div', {
-            'class': {
-                'hype-ui': true,
-                'hype-ui-shade': false
-            }
-        }, '张三'));
-        console.log(createElement);
+        var oBtn = document.getElementById('btn');
+        oBtn.onclick = function () {
+            hype.open();
+        };
     </script>
 </body>
 </html>
