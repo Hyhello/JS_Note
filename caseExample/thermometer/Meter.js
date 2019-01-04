@@ -8,7 +8,7 @@
         // 检查配置
         this.constructor.checkConf(options);
         // 初始化配置
-        this._conf = this.constructor.extend(true, options, this.constructor.CONF);
+        this._conf = this.constructor.extend(true, this.constructor.CONF, options);
 
         if (this._conf.maxTemp <= this._conf.minTemp) {
             throw new Error('[Meter] options property：maxTemp must gt minTemp');
@@ -58,15 +58,16 @@
     };
 
     Meter.extend = function () {
+        var j, resource, i = 0;
         var target = arguments[0];
         var argList = Array.prototype.slice.call(arguments, 1);
         var argLen = argList.length;
         target = typeof target === 'boolean' ? {} : target;
-        while (argLen--) {
-            var resource = argList[argLen];
-            for (var i in resource) {
-                if (resource.hasOwnProperty(i)) {
-                    target[i] = resource[i];
+        while (i < argLen) {
+            resource = argList[i++];
+            for (j in resource) {
+                if (resource.hasOwnProperty(j)) {
+                    target[j] = resource[j];
                 }
             }
         }

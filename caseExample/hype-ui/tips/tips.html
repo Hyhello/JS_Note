@@ -25,17 +25,21 @@
 
         .hype-ui-tips {
             position: fixed;
-            /* display: block; */
-            top: 50%;
+            top: 30%;
             left: 50%;
             z-index: 3000;
-            min-width: 120px;
-            padding: 12px 25px;
             text-align: center;
             user-select: none;
+        }
+        .hype-ui-panel {
+            position: relative;
+            top: -50%;
+            left: -50%;
+            box-sizing: border-box;
+            padding: 12px 25px;
+            min-width: 120px;
             box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.125);
             background-color: #FFFFFF;
-            /* transform: translate(-50%, -50%); */
         }
         #btn {
             position: fixed;
@@ -50,7 +54,10 @@
     <script>
         var oBtn = document.getElementById('btn');
         oBtn.onclick = function () {
-            hype.open();
+            hype.open({
+                message: '你好啊',
+                shade: false
+            });
         };
     </script>
 </body>

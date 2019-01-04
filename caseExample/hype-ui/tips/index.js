@@ -30,11 +30,11 @@
 
         OPTIONS = {
             type: 1,
-            message: '测试',             // 内容信息
+            message: '测试',            // 内容信息
             onClose: noop,              // 关闭回调
             skin: 'default',            // 皮肤
             shade: true,                // 遮罩
-            duration: 3000,             // 持续时间 default: 3000ms
+            duration: 30000,            // 持续时间 default: 3000ms
             showClose: false	        // 是否展示关闭按钮
         },
 
@@ -59,15 +59,16 @@
         },
 
         extend = function () {
+            var j, resource, i = 0;
             var target = arguments[0];
             var argList = Array.prototype.slice.call(arguments, 1);
             var argLen = argList.length;
             target = typeof target === 'boolean' ? {} : target;
-            while (argLen--) {
-                var resource = argList[argLen];
-                for (var i in resource) {
-                    if (resource.hasOwnProperty(i)) {
-                        target[i] = resource[i];
+            while (i < argLen) {
+                resource = argList[i++];
+                for (j in resource) {
+                    if (resource.hasOwnProperty(j)) {
+                        target[j] = resource[j];
                     }
                 }
             }
@@ -79,9 +80,11 @@
         hype.version = version;
 
         // 提示
-        hype.open = function (options = {}) {
+        hype.open = function (options) {
+            options = options || {};
             checkConf(options);
             this.$opt = extend(true, OPTIONS, options);
+            console.log(this.$opt);
             this.render();
         };
 
@@ -104,13 +107,15 @@
                 document.body.appendChild(this.shade);
             }
             var oEl = createElement('div', {
-                'class': ['hype-ui', 'hype-ui-tips', 'layer-anim', 'layer-anim-04'],
+                'class': ['hype-ui', 'hype-ui-tips']
+            }, [createElement('div', {
+                'class': ['hype-ui-panel', 'layer-anim', 'layer-anim-00'],
                 'once': {
                     'animationend': function () {
-                        oEl.classList.remove('layer-anim-04');
+                        oEl.classList.remove('layer-anim-00');
                     }
                 }
-            }, this.$opt.message);
+            }, this.$opt.message)]);
             document.body.appendChild(oEl);
             var _this = this;
             setTimeout(function () {
