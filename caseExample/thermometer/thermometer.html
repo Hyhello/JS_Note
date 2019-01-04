@@ -34,7 +34,7 @@
     </div>
     <input type="text" id="text" />
     <script src="../count.js"></script>
-    <script src="./Meter.min.js"></script>
+    <script src="./Meter.js"></script>
     <script>
         var oInp = document.getElementById('text');
         var options = {
@@ -42,27 +42,29 @@
             tempTitle: 'C',                          // 温度计标题
             titleFont: '20px',                       // 标题文字
             titleColor: '#888888',                   // 标题字体颜色
+            titleOffsetBottom: 10,
+            valOffsetTop: 10,
             margin: 30,                              // 温度计距离顶部及底部的margin距离，默认值为20
             offset: 5,                               // 温度计管距离刻度距离
             ballRadius: 10,                          // 底部温度球半径，默认值10，当showBall 为true，生效
             tempVal: 80.01,                          // 默认的温度值，默认值为26
             tempWidth: 8,                            // 温度计管宽度，默认值为20
-            maxTemp: 110,                            // 最大温度值，默认值为100
-            minTemp: 50,                            // 最小温度值，默认值为0
+            maxTemp: 100,                            // 最大温度值，默认值为100
+            minTemp: 20,                            // 最小温度值，默认值为0
             tempCap: 'round',                         // 温度计头部样式，默认值为：butt
             tempBgColor: '#cccccc',                  // 温度计背景色，默认值为: #CCCCCC
             tempActiveBgColor: '#888888',            // 温度计活动背景色，默认值为：#888888
             scaleColor: '#888888',                   // 温度计刻度颜色
             scaleOffset: 10,                         // 温度计刻度跨度
             scaleFont: '14px',                       // 刻度字体大小
-            scaleFontFamily: 'Helvetica ',           // 刻度字体
+            fontFamily: 'Helvetica ',                // 刻度字体样式
             scalePlacement: 'right',                 // 温度计指针位置，默认值：left,【left, right, both】
             cursorWidth: 30,                         // 游标宽度
             cursorHeight: 7,                         // 游标高度
             cursorBgColor: '#F08080',                // 游标背景色
             showLabel: true,                         // 是否显示温度标签，默认值为true
             showCursor: true,                        // 是否显示游标
-            showBall: false                           // 是否显示底部温度球，默认值为true
+            showBall: true                           // 是否显示底部温度球，默认值为true
         };
         var meter = new Meter(document.getElementById('canvas'), options);
         oInp.oninput = function () {

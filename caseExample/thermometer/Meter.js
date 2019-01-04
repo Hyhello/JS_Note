@@ -1,4 +1,23 @@
 (function (global) {
+
+    // 字体宽度及高度
+    var TextLine = function (font, text) {
+        this.$ctx = document.createElement('canvas').getContext('2d');
+        this.$ctx.font = font;
+        this.text = text;
+    };
+
+    TextLine.prototype = {
+        constructor: TextLine,
+        getTextWidth: function () {
+            return this.$ctx.measureText(this.text).width;
+        },
+        getTextHeight: function () {
+            const width = this.$ctx.measureText('M').width;
+            return width * 7 / 6;
+        }
+    };
+
     // 温度计
     var Meter = function (el, options = {}) {
         var rect = el.getBoundingClientRect();
@@ -27,6 +46,11 @@
         // 温度计到球的衔接距离
         this._conf.extendOffset = this._conf.ballRadius - Math.sqrt(this._conf.ballRadius * this._conf.ballRadius - this._conf.tempWidth * this._conf.tempWidth / 4);
 
+        // 标题字体
+        // 标题高度
+        this._conf._fontTitleHeight = this._conf.showLabel ? new TextLine(this._conf.titleFont + ' ' + this._conf.fontFamily, this._conf.tempTitle).getTextHeight() + this._conf.titleOffsetBottom : 0;
+        // 温度计val字体高度
+        this._conf._fontValHeight = new TextLine(this._conf.valFont + ' ' + this._conf.fontFamily, this._conf.tempTitle).getTextHeight() + this._conf.valOffsetTop;
         // 初始化动画
         var _this = this;
         this._count = new Count(this._conf.minTemp, this._conf.tempVal, this._conf.duration, function (val) {
@@ -77,11 +101,13 @@
     Meter.CONF = {
         tempTitle: '温度计',                      // 温度计标题
         titleFont: '20px',                       // 标题文字
-        fontPadding: 20,                         // 文字padding
+        titleOffsetBottom: 20,                   // 文字padding
         titleColor: '#000000',                   // 标题字体颜色
         margin: 20,                              // 温度计距离顶部及底部的margin距离，默认值为20
         offset: 5,                               // 温度计管距离刻度距离
         ballRadius: 20,                          // 底部温度球半径，默认值10，当showBall 为true，生效
+        valFont: '20px',                         // 温度计变量字体
+        valOffsetTop: 10,                        // 温度计变量字体距离温度计顶部高度
         tempVal: 26,                             // 默认的温度值，默认值为26
         tempWidth: 20,                           // 温度计管宽度，默认值为20
         maxTemp: 100,                            // 最大温度值，默认值为100
@@ -92,7 +118,7 @@
         scaleColor: '#888888',                   // 温度计刻度颜色
         scaleOffset: 10,                         // 温度计刻度跨度
         scaleFont: '14px',                       // 刻度字体大小
-        scaleFontFamily: 'Helvetica ',           // 刻度字体
+        fontFamily: 'Helvetica ',                // 字体样式
         scalePlacement: 'left',                  // 温度计指针位置，默认值：left,【left, right, both】
         cursorWidth: 30,                         // 游标宽度
         cursorHeight: 7,                         // 游标高度
@@ -104,6 +130,7 @@
 
     Meter.prototype = {
         constructor: Meter,
+        v: '0.0.1',
         _init: function () {
             this._ctx.clearRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height);
             this._ctx.save();
@@ -126,8 +153,6 @@
             if (this._conf.showLabel) {
                 this._drawTitleText();
             }
-            this._conf._fontTitleHeight = this._conf.showLabel ? this.constructor.toNumber(this._conf.titleFont) + this._conf.fontPadding : 0;
-            this._conf._fontValHeight = 30;
             // 画val
             this._drawValText();
             // 里面壳
@@ -155,7 +180,7 @@
             this._ctx.save();
             this._ctx.beginPath();
             this._ctx.translate(0, this._conf.margin * 2 - this._ctx.canvas.height);
-            this._ctx.font = this._conf.titleFont + ' ' + this._conf.scaleFontFamily;
+            this._ctx.font = this._conf.titleFont + ' ' + this._conf.fontFamily;
             this._ctx.fillStyle = this._conf.titleColor;
             this._ctx.textAlign = 'center';
             this._ctx.textBaseline = 'middle';
@@ -166,7 +191,7 @@
         _drawValText () {
             this._ctx.save();
             this._ctx.beginPath();
-            this._ctx.font = '24px ' + this._conf.scaleFontFamily;
+            this._ctx.font = '24px ' + this._conf.fontFamily;
             // console.log(this._ctx.measureText(this._conf.tempVal));
             this._ctx.textAlign = 'center';
             this._ctx.textBaseline = 'middle';
@@ -234,7 +259,7 @@
                 this._ctx.moveTo(n * 0.5, -0.5);
                 if (i % this._conf.scaleOffset === 0) {
                     this._ctx.lineTo(n * 10.5, -0.5);
-                    this._ctx.font = this._conf.scaleFont + ' ' + this._conf.scaleFontFamily;
+                    this._ctx.font = this._conf.scaleFont + ' ' + this._conf.fontFamily;
                     this._ctx.fillStyle = this._conf.scaleColor;
                     this._ctx.textAlign = n === -1 ? 'right' : 'left';
                     this._ctx.textBaseline = 'middle';

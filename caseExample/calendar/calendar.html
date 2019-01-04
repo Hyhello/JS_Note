@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>日历控件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .hype-ui,
+        .hype-ui * {
+            box-sizing: border-box;
+        }
+        .hype-ui-calendar {
+            position: absolute;
+            left: 30px;
+            top: 50px;
+            border-top: 0;
+            border-bottom: 0;
+            background-color: #fff;
+            color: #333;
+            padding: 5px;
+            border: 1px solid #c6c6c6;
+        }
+        .hy-calendar-date__title {
+            border: 1px solid #c6c6c6;
+            margin-bottom: 5px;
+            zoom: 1;
+        }
+        .hy-calendar-date__title::after {
+            content: '';
+            height: 0;
+            overflow: hidden;
+            display: block;
+            clear: both;
+        }
+        .calendar-date__y,
+        .calendar-date__m {
+            float: left;
+        }
+        .calendar-date__m {
+            float: left;
+        }
+        .calendar-date__choose {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 24px;
+            cursor: pointer;
+            background-color: #f6f6f6;
+        }
+        .calendar-date__choose > .cite-triangle {
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            border-width: 5px;
+            border-style: dashed;
+            border-color: transparent;
+            overflow: hidden;
+            cursor: pointer;
+            top: 50%;
+        }
+        .date__choose-prev {
+            border-right: 1px solid #c6c6c6;
+        }
+        .date__choose-next {
+            border-left: 1px solid #c6c6c6;
+        }
+        .date__choose-prev > .cite-triangle {
+            border-right-style: solid;
+            border-right-color: #666;
+            left: 50%;
+        }
+        .date__choose-next > .cite-triangle {
+            border-left-style: solid;
+            border-left-color: #666;
+            right: 50%;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" />
+    <div class="hype-ui hype-ui-calendar">
+        <div class="hy-calendar-date__title">
+            <div class="calendar-date__y">
+                <a href="javascript: void(0);" class="calendar-date__choose date__choose-prev">
+                    <cite class="cite-triangle"></cite>
+                </a>
+                <!-- <span>2019年</span> -->
+                <a href="javascript: void(0);" class="calendar-date__choose date__choose-next">
+                    <cite class="cite-triangle"></cite>
+                </a>
+            </div>
+            <div class="calendar-date__m">
+                <a href="javascript: void(0);" class="calendar-date__choose date__choose-prev">
+                    <cite class="cite-triangle"></cite>
+                </a>
+                <!-- <span>01月</span> -->
+                <a href="javascript: void(0);" class="calendar-date__choose date__choose-next">
+                    <cite class="cite-triangle"></cite>
+                </a>
+            </div>
+        </div>
+        <table class="hy-calendar-date__body">
+            <thead>
+                <tr>
+                    <th>日</th>
+                    <th>一</th>
+                    <th>二</th>
+                    <th>三</th>
+                    <th>四</th>
+                    <th>五</th>
+                    <th>六</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>30</td>
+                    <td>31</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td>21</td>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    <td>26</td>
+                </tr>
+                <tr>
+                    <td>27</td>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>30</td>
+                    <td>31</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="hy-calendar-date__footer">
+            <ul class="calendar-date__time">
+                <li>时间</li>
+                <li>hh</li>
+                <li>mm</li>
+                <li>ss</li>
+            </ul>
+            <div class="calendar-date__btn">
+                <a href="javascript: void(0);">清空</a>
+                <a href="javascript: void(0);">今天</a>
+                <a href="javascript: void(0);">确认</a>
+            </div>
+        </div>
+    </div>
+    <script src="./calendar.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>
