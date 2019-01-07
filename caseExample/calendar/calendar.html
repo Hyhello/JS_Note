@@ -10,173 +10,226 @@
             margin: 0;
             padding: 0;
         }
-        .hype-ui,
-        .hype-ui * {
+        .hype-ui {
             box-sizing: border-box;
         }
-        .hype-ui-calendar {
-            position: absolute;
-            left: 30px;
-            top: 50px;
-            border-top: 0;
-            border-bottom: 0;
-            background-color: #fff;
+        .hype-ui-calendar__wrapper {
+            width: 390px;
             color: #333;
-            padding: 5px;
-            border: 1px solid #c6c6c6;
+            border: 1px solid #e4e7ed;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+            background: #fff;
+            border-radius: 4px;
+            line-height: 30px;
+            margin: 5px 0;
         }
-        .hy-calendar-date__title {
-            border: 1px solid #c6c6c6;
-            margin-bottom: 5px;
-            zoom: 1;
-        }
-        .hy-calendar-date__title::after {
-            content: '';
-            height: 0;
-            overflow: hidden;
-            display: block;
-            clear: both;
-        }
-        .calendar-date__y,
-        .calendar-date__m {
-            float: left;
-        }
-        .calendar-date__m {
-            float: left;
-        }
-        .calendar-date__choose {
+        .hype-ui-calendar__main[slot=main], .hype-ui-calendar__main {
             position: relative;
-            display: inline-block;
-            width: 20px;
-            height: 24px;
-            cursor: pointer;
-            background-color: #f6f6f6;
-        }
-        .calendar-date__choose > .cite-triangle {
-            position: absolute;
-            display: block;
-            width: 0;
-            height: 0;
-            border-width: 5px;
-            border-style: dashed;
-            border-color: transparent;
             overflow: hidden;
+        }
+        .hype-ui-calendar__sidebar[slot=sidebar], .hype-ui-calendar__sidebar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 102px;
+            border-right: 1px solid #e4e4e4;
+            box-sizing: border-box;
+            padding-top: 6px;
+            background-color: #fff;
+            overflow: auto;
+        }
+
+        .hype-ui-calendar__sidebar .calendar__sidebar__shortcut {
+            display: block;
+            width: 100%;
+            border: 0;
+            background-color: transparent;
+            line-height: 28px;
+            font-size: 14px;
+            color: #333;
+            padding:1px 8px;
+            text-align: left;
+            outline: none;
             cursor: pointer;
-            top: 50%;
         }
-        .date__choose-prev {
-            border-right: 1px solid #c6c6c6;
+
+        .hype-ui-calendar__body[slot=body], .hype-ui-calendar__body {
+            margin-left: 102px;
         }
-        .date__choose-next {
-            border-left: 1px solid #c6c6c6;
+
+        .hype-ui-calendar__body .calendar__body__time-header {
+            margin: 10px 12px;
+            text-align: center;
         }
-        .date__choose-prev > .cite-triangle {
-            border-right-style: solid;
-            border-right-color: #666;
+
+        .hype-ui-calendar__body .calendar__body__time-content {
+            position: relative;
+            width: 100%;
+            font-size: 12px;
+            user-select: none;
+            border-spacing: 0;
+        }
+        .hype-ui-calendar__body .calendar__body__time-content .calendar__body__date-table {
+            table-layout: fixed;
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        .hype-ui-calendar__body .calendar__body__time-content .thead,
+        .hype-ui-calendar__body .calendar__body__time-content .tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        .hype-ui-calendar__body .calendar__body__time-content tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        .hype-ui-calendar__body .calendar__body__time-content th {
+            padding: 5px;
+            color: #333;
+            font-weight: 400;
+            border-bottom: 1px solid #ebeef5;
+        }
+
+        .hype-ui-calendar__body .calendar__body__time-content td {
+            width: 34px;
+            height: 30px;
+            padding: 4px 0;
+            box-sizing: border-box;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .hype-ui-calendar__body .calendar__body__time-content td div {
+            height: 30px;
+            padding: 3px 0;
+            box-sizing: border-box;
+        }
+
+        .hype-ui-calendar__body .calendar__body__time-content td .cell {
+            width: 24px;
+            height: 24px;
+            display: block;
+            margin: 0 auto;
+            line-height: 24px;
+            position: absolute;
             left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
         }
-        .date__choose-next > .cite-triangle {
-            border-left-style: solid;
-            border-left-color: #666;
-            right: 50%;
+
+        .hype-ui-calendar__footer {
+            border-top: 1px solid #e4e4e4;
+            padding: 4px;
+            text-align: right;
+            background-color: #fff;
+            position: relative;
+            font-size: 0;
         }
     </style>
 </head>
 <body>
     <input type="text" />
-    <div class="hype-ui hype-ui-calendar">
-        <div class="hy-calendar-date__title">
-            <div class="calendar-date__y">
-                <a href="javascript: void(0);" class="calendar-date__choose date__choose-prev">
-                    <cite class="cite-triangle"></cite>
-                </a>
-                <!-- <span>2019年</span> -->
-                <a href="javascript: void(0);" class="calendar-date__choose date__choose-next">
-                    <cite class="cite-triangle"></cite>
-                </a>
+    <div class="hype-ui hype-ui-calendar__wrapper">
+        <div slot="main" class="hype-ui-calendar__main">
+            <!-- 左侧 -->
+            <div slot="sidebar" class="hype-ui-calendar__sidebar">
+                <button type="button" class="calendar__sidebar__shortcut" data-value="0" data-time="">今天</button>
+                <button type="button" class="calendar__sidebar__shortcut" data-value="-1" data-time="">昨天</button>
+                <button type="button" class="calendar__sidebar__shortcut" data-value="-7" data-time="">一周前</button>
             </div>
-            <div class="calendar-date__m">
-                <a href="javascript: void(0);" class="calendar-date__choose date__choose-prev">
-                    <cite class="cite-triangle"></cite>
-                </a>
-                <!-- <span>01月</span> -->
-                <a href="javascript: void(0);" class="calendar-date__choose date__choose-next">
-                    <cite class="cite-triangle"></cite>
-                </a>
+            <!-- 内容主体部分 -->
+            <div class="hype-ui-calendar__body">
+                <div class="calendar__body__time-header">
+                    <i class="kxiconfont icon-first c-datepicker-picker__icon-btn c-datepicker-date-picker__prev-btn year" aria-label="前一年"></i>
+                    <i class="kxiconfont icon-left c-datepicker-picker__icon-btn c-datepicker-date-picker__prev-btn month" aria-label="上个月" style="display: block;"></i>
+                    <span role="button" class="c-datepicker-date-picker__header-label c-datepicker-date-picker__header-year">
+                        <span>2012</span> 年
+                    </span>
+                    <span role="button" class="c-datepicker-date-picker__header-label c-datepicker-date-picker__header-month" style="display: inline;">
+                        <span>3</span> 月
+                    </span>
+                    <i class="kxiconfont icon-last c-datepicker-picker__icon-btn c-datepicker-date-picker__next-btn year" aria-label="后一年"></i>
+                    <i class="kxiconfont icon-right c-datepicker-picker__icon-btn c-datepicker-date-picker__next-btn month" aria-label="下个月" style="display: block;"></i>
+                </div>
+                <div class="calendar__body__time-content">
+                    <table class="calendar__body__date-table">
+                        <tr>
+                            <th>日</th>
+                            <th>一</th>
+                            <th>二</th>
+                            <th>三</th>
+                            <th>四</th>
+                            <th>五</th>
+                            <th>六</th>
+                        </tr>
+                        <tr>
+                            <td><div><a class="cell">30</a></div></td>
+                            <td><div><a class="cell">31</a></div></td>
+                            <td><div><a class="cell">1</a></div></td>
+                            <td><div><a class="cell">2</a></div></td>
+                            <td><div><a class="cell">3</a></div></td>
+                            <td><div><a class="cell">4</a></div></td>
+                            <td><div><a class="cell">5</a></div></td>
+                        </tr>
+                        <tr>
+                            <td><div><a class="cell">6</a></div></td>
+                            <td><div><a class="cell">7</a></div></td>
+                            <td><div><a class="cell">8</a></div></td>
+                            <td><div><a class="cell">9</a></div></td>
+                            <td><div><a class="cell">10</a></div></td>
+                            <td><div><a class="cell">11</a></div></td>
+                            <td><div><a class="cell">12</a></div></td>
+                        </tr>
+                        <tr>
+                            <td><div><a class="cell">13</a></div></td>
+                            <td><div><a class="cell">14</a></div></td>
+                            <td><div><a class="cell">15</a></div></td>
+                            <td><div><a class="cell">16</a></div></td>
+                            <td><div><a class="cell">17</a></div></td>
+                            <td><div><a class="cell">18</a></div></td>
+                            <td><div><a class="cell">19</a></div></td>
+                        </tr>
+                        <tr>
+                            <td><div><a class="cell">20</a></div></td>
+                            <td><div><a class="cell">21</a></div></td>
+                            <td><div><a class="cell">22</a></div></td>
+                            <td><div><a class="cell">23</a></div></td>
+                            <td><div><a class="cell">24</a></div></td>
+                            <td><div><a class="cell">25</a></div></td>
+                            <td><div><a class="cell">26</a></div></td>
+                        </tr>
+                        <tr>
+                            <td><div><a class="cell">27</a></div></td>
+                            <td><div><a class="cell">28</a></div></td>
+                            <td><div><a class="cell">29</a></div></td>
+                            <td><div><a class="cell">30</a></div></td>
+                            <td><div><a class="cell">31</a></div></td>
+                            <td><div><a class="cell">1</a></div></td>
+                            <td><div><a class="cell">2</a></div></td>
+                        </tr>
+                        <tr>
+                            <td><div><a class="cell">3</a></div></td>
+                            <td><div><a class="cell">4</a></div></td>
+                            <td><div><a class="cell">5</a></div></td>
+                            <td><div><a class="cell">6</a></div></td>
+                            <td><div><a class="cell">7</a></div></td>
+                            <td><div><a class="cell">8</a></div></td>
+                            <td><div><a class="cell">9</a></div></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
-        <table class="hy-calendar-date__body">
-            <thead>
-                <tr>
-                    <th>日</th>
-                    <th>一</th>
-                    <th>二</th>
-                    <th>三</th>
-                    <th>四</th>
-                    <th>五</th>
-                    <th>六</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>30</td>
-                    <td>31</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>7</td>
-                    <td>8</td>
-                    <td>9</td>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                </tr>
-                <tr>
-                    <td>13</td>
-                    <td>14</td>
-                    <td>15</td>
-                    <td>16</td>
-                    <td>17</td>
-                    <td>18</td>
-                    <td>19</td>
-                </tr>
-                <tr>
-                    <td>20</td>
-                    <td>21</td>
-                    <td>22</td>
-                    <td>23</td>
-                    <td>24</td>
-                    <td>25</td>
-                    <td>26</td>
-                </tr>
-                <tr>
-                    <td>27</td>
-                    <td>28</td>
-                    <td>29</td>
-                    <td>30</td>
-                    <td>31</td>
-                    <td>1</td>
-                    <td>2</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="hy-calendar-date__footer">
-            <ul class="calendar-date__time">
-                <li>时间</li>
-                <li>hh</li>
-                <li>mm</li>
-                <li>ss</li>
-            </ul>
-            <div class="calendar-date__btn">
-                <a href="javascript: void(0);">清空</a>
-                <a href="javascript: void(0);">今天</a>
-                <a href="javascript: void(0);">确认</a>
-            </div>
+        <!-- footer -->
+        <div class="hype-ui-calendar__footer">
+            <button type="button"><span>此刻</span></button>
+            <button type="button"><span>确定</span></button>
         </div>
     </div>
     <script src="./calendar.js"></script>
