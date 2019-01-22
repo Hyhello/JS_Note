@@ -19,7 +19,8 @@
     };
 
     // 温度计
-    var Meter = function (el, options = {}) {
+    var Meter = function (el, options) {
+        options = options || {};
         var rect = el.getBoundingClientRect();
         this._ctx = el.getContext('2d');
         el.width = rect.width;

@@ -1,5 +1,5 @@
 (function (global) {
-    var Count = function (startVal, endVal, duration = 3000, callback) {
+    var Count = function (startVal, endVal, duration, callback) {
         var ensureNumber = this.constructor.ensureNumber;
         startVal = Number(startVal);
         endVal = Number(endVal);
@@ -17,7 +17,7 @@
         this.isPause = false;
         this.startVal = startVal;
         this.endVal = endVal;
-        this.originDuration = this.duration = duration;
+        this.originDuration = this.duration = duration || 3000;
         this.callback = callback;
         this.countDown = this.startVal > this.endVal;
     };
