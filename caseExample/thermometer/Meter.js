@@ -171,12 +171,12 @@
                 this._drawCursor(signList[i]);
             }
         },
-        update (newVal) {
+        update: function (newVal) {
             newVal = Math.max(this._conf.minTemp, Math.min(newVal, this._conf.maxTemp));
             this._count.update(newVal);
         },
         // 绘制标题
-        _drawTitleText () {
+        _drawTitleText: function () {
             this._ctx.save();
             this._ctx.beginPath();
             this._ctx.translate(0, this._conf.margin * 2 - this._ctx.canvas.height);
@@ -188,7 +188,7 @@
             this._ctx.restore();
         },
         // 绘制val标题
-        _drawValText () {
+        _drawValText: function () {
             this._ctx.save();
             this._ctx.beginPath();
             this._ctx.font = '24px ' + this._conf.fontFamily;
@@ -274,7 +274,7 @@
             this._ctx.restore();
         },
         // 游标
-        _drawCursor (n) {
+        _drawCursor: function (n) {
             var radius = this._conf.showBall ? this._conf.ballRadius : 0;
             var tempHeight = (this._conf.margin + radius) * 2 - this._ctx.canvas.height + this._conf._fontTitleHeight + this._conf._fontValHeight;
             var val = (this._conf.tempVal - this._conf.minTemp) * tempHeight / (this._conf.maxTemp - this._conf.minTemp);
