@@ -80,7 +80,7 @@
             delete this.startTime;
             this.endVal = newEndVal;
             this.startVal = this.frameVal || this.startVal;
-            this.duration = this.remaining || this.duration;
+            this.duration = this.remaining || this.originDuration;
             this.countDown = this.startVal > this.endVal;
             this.start();
         },
