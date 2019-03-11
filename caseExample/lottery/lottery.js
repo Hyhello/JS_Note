@@ -51,7 +51,7 @@ Lottery.sum = function (opt, key) {
 Lottery.compare = function (prop) {
     var toNumber = this.toNumber;
     return function (x, y) {
-        return toNumber(x[prop]) - toNumber(y[prop]);
+        return toNumber(x[prop]) > toNumber(y[prop]);
     };
 };
 
@@ -125,7 +125,7 @@ Lottery.prototype = {
         }
     },
     // 抽奖盘
-    _drawPlate (n) {
+    _drawPlate: function (n) {
         var len = this.options.length;
         this.$ctx.save();
         this.$ctx.rotate(n * Math.PI / 180 - Math.PI / 2 - Math.PI / len);
@@ -157,7 +157,7 @@ Lottery.prototype = {
         }
         this.$ctx.restore();
     },
-    _clickDrawCicle () {
+    _clickDrawCicle: function () {
         this.$ctx.beginPath();
         this.$ctx.fillStyle = '#FFBE04';
         this.$ctx.arc(0, 0, this.$ctx.canvas.height / 14, 0, Math.PI * 2, false);
