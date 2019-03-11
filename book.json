@@ -115,6 +115,10 @@
                 {
                     "value": "https://blog.hyhello.top",
                     "text": "博客"
+                },
+                {
+                    "value": "https://book.hyhello.top/123",
+                    "text": "123"
                 }
             ]
         }
