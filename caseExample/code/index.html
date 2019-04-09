@@ -12,19 +12,22 @@
             width: 100%;
             height: 100%;
         }
-        canvas {
+        #canvas {
+            width: 230px;
+            height: 80px;
             background-color: #FFFFFF;
         }
 
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
+    <div id="canvas"></div>
     <script src="./code.js"></script>
     <script type="text/javascript">
         var canvas = document.getElementById('canvas');
-
-        new Code(canvas);
+        new Code(canvas, {
+            codeLen: 6
+        });
     </script>
 </body>
 </html>
