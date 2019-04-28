@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片验证码</title>
+</head>
+<body>
+    <!-- 验证码 -->
+    <div class="code-panel" id="code"></div>
+    <script>
+
+        var Code = (function () {
+
+            var defaults = {};
+
+            var $dpr = window.devicePixelRatio || 1;
+
+            // 判断是否时element
+            var isElement = function (el) {
+                return typeof el === 'object' && el.nodeType === 1;
+            };
+
+            var _checkConf = function (options) {
+                var CONF = defaults;
+                Object.keys(CONF).forEach(function (item, key) {
+                    var type = _typeof(CONF[item]);
+                    // eslint-disable-next-line valid-typeof
+                    if (options[item] && _typeof(options[item]) !== type) {
+                        throw new TypeError('[Code] options property：' + item + ' is not a ' + type);
+                    }
+                });
+            };
+
+            var init = function (el, options) {
+                this.$el = isElement(id) ? id : document.getElementById(id);
+                var rect = this.$el.getBoundingClientRect();
+
+                if (!rect.height) {
+                    console.warn('parent box must has height');
+                    return;
+                }
+
+                options = options || {}; // 校验
+
+                Code._checkConf(options);
+
+                this.callback = callback || function () {};
+            };
+
+            return init;
+        } ());
+
+    </script>
+</body>
+</html>

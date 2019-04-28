@@ -13,7 +13,7 @@
             height: 100%;
         }
         #canvas {
-            width: 230px;
+            width: 430px;
             height: 80px;
             background-color: #FFFFFF;
         }
@@ -22,11 +22,17 @@
 </head>
 <body>
     <div id="canvas"></div>
+    <span id="span"></span>
     <script src="./code.js"></script>
     <script type="text/javascript">
         var canvas = document.getElementById('canvas');
+        var span = document.getElementById('span');
         new Code(canvas, {
-            codeLen: 6
+            codeLen: 3,
+            lineNum: 10,
+            dotNum: 200
+        }, function (str) {
+            span.innerHTML = str;
         });
     </script>
 </body>
