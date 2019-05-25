@@ -200,6 +200,7 @@ var Bubble = (function () {
             this.$el = _isElement(el) ? el : document.getElementById(el);
             _checkOptions(options);
             var options = _extend(true, DEFAULTS, options);
+            var offset = toNumber(_getStyle(this.$el, 'font-size')) / 2;
             this.$el._prevValue_ = '';
             this.$el.__outSideClick__ = function (ev) {
                 var data = _getData(this);
@@ -209,16 +210,16 @@ var Bubble = (function () {
                 }
                 var oEle = _createElement(data, options);
                 var rect = _clientRect(this);
-                var oLeft = _getRandom(1, rect.width - 1) - toNumber(_getStyle(oEle, 'font-size')) / 2;
+                var oLeft = _getRandom(1, rect.width - 1) - offset;
                 // 防止中文输入法下报错
                 if (!oEle) return false;
                 oEle.style.left = oLeft + rect.left + 'px';
                 oEle.style.top = rect.top + 'px';
                 this.parentNode.appendChild(oEle);
-                _bindAnimate(oEle, 0, options.end, function (value, status) {
+                _bindAnimate(oEle, -options.top, options.end, function (value, status) {
                     // 兼容ie9以下
                     if (_lte9()) {
-                        this.style.top = -1 * value + 'px';
+                        this.style.top = -1 * value + rect.top + 'px';
                     } else {
                         this.style.transform = 'translate(0, ' + -1 * value + 'px)';
                     }
