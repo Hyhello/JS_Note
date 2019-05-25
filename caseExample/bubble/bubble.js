@@ -89,13 +89,11 @@ var Bubble = (function () {
     // 获取最后一个值 兼容ie
     function _getData (ele) {
         var data = '';
-        var cacheData = ele._prevValue_;
-        if (ele.value && ele.value.length > cacheData.length) {
-            data = ele.value.slice(ele.value.length - 1);
-        } else {
-            data = '';
-        }
-        cacheData = ele.value;
+        var cacheData = ele._prevValue_ || '';
+        data = ele.value && ele.value.length > cacheData.length
+                         ? ele.value.slice(ele.value.length - 1)
+                         : '';
+        ele._prevValue_ = ele.value;
         return data;
     }
 
