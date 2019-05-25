@@ -50,6 +50,28 @@ var Bubble = (function () {
         }
     }
 
+    // aaa-bb -> aaaBb
+    function cameline (str) {
+        return str.replace(/-(\w)/g, function (_, $1) {
+            return $1.toUpperCase();
+        });
+    }
+
+    // style
+    function _getStyle (el, attr) {
+        try {
+            return window.getComputedStyle(el, null).getPropertyValue(attr);
+        } catch (e) {
+            return el.currentStyle.getAttribute(cameline(attr));
+        }
+    }
+
+    // toNumber
+    function toNumber (n) {
+        var val = parseFloat(n);
+        return isNaN(val) ? n : val;
+    }
+
     /**
      * @des 获取随机
      * @param { int } min
@@ -187,7 +209,7 @@ var Bubble = (function () {
                 }
                 var oEle = _createElement(data, options);
                 var rect = _clientRect(this);
-                var oLeft = _getRandom(1, rect.width - 1);
+                var oLeft = _getRandom(1, rect.width - 1) - toNumber(_getStyle(oEle, 'font-size')) / 2;
                 // 防止中文输入法下报错
                 if (!oEle) return false;
                 oEle.style.left = oLeft + rect.left + 'px';
