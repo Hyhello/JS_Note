@@ -52,23 +52,23 @@ gulp.task('syncBookJson', function () {
 
 gulp.task('init', ['syncBookJson'], function () {
     if (!shelljs.test('-d', root)) {
-        shelljs.echo('-e', '正在生成目录：' + root);
+        shelljs.echo('-e', '\033[30;36minfo:\033[0m 正在生成目录：' + root);
         shelljs.mkdir(root);
-        shelljs.echo('-e', '生成目录' + root + '完成！');
+        shelljs.echo('-e', '\033[30;36minfo:\033[0m 生成目录' + root + '完成！');
     }
     if (!shelljs.test('-e', root + '/SUMMARY.md')) {
-        shelljs.echo('-e', '创建SUMMARY依赖文件');
+        shelljs.echo('-e', '\033[30;36minfo:\033[0m 创建SUMMARY依赖文件');
         shelljs.cd(root);
         shelljs.exec('gitbook init');
         shelljs.cd('..');
-        shelljs.echo('-e', '创建SUMMARY依赖文件完成');
+        shelljs.echo('-e', '\033[30;36minfo:\033[0m 创建SUMMARY依赖文件完成');
         shelljs.exec('gulp init');
     } else {
-        shelljs.echo('-e', '初始化gitbook项目');
+        shelljs.echo('-e', '\033[30;36minfo:\033[0m 初始化gitbook项目');
         shelljs.cd(root);
         shelljs.exec('gitbook init');
         shelljs.cd('..');
-        shelljs.echo('-e', '初始化gitbook项目完成');
+        shelljs.echo('-e', '\033[30;36minfo:\033[0m 初始化gitbook项目完成');
     }
 });
 
