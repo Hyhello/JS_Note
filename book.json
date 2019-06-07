@@ -1,6 +1,6 @@
 {
-    "title": "js笔记记录",
-    "description": "记录 web端学习笔记",
+    "title": "Canvas学习文档",
+    "description": "记录 Canvas学习文档",
     "author": "hyhello",
     "language": "zh-hans",
     "gitbook": "3.2.2",
@@ -84,7 +84,7 @@
             "skipFirstH1": true
         },
         "edit-link": {
-            "base": "https://github.com/Hyhello/JS_Note/edit/canvas/docs",
+            "base": "https://github.com/Hyhello/JS_Note/edit/vue/docs",
             "label": "编辑当前页"
         },
         "anchor-navigation-ex": {
