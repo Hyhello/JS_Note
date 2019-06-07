@@ -110,10 +110,6 @@
                     "selected": true
                 },
                 {
-                    "value": "https://book.hyhello.top/gulp",
-                    "text": "gulp配置"
-                },
-                {
                     "value": "https://book.hyhello.top/vue",
                     "text": "Vue"
                 }
