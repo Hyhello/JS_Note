@@ -113,12 +113,8 @@
                     "text": "gulp配置"
                 },
                 {
-                    "value": "https://blog.hyhello.top",
-                    "text": "博客"
-                },
-                {
-                    "value": "https://book.hyhello.top/123",
-                    "text": "123"
+                    "value": "https://book.hyhello.top/vue",
+                    "text": "Vue"
                 }
             ]
         }
