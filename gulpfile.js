@@ -3,15 +3,29 @@ var fs = require('fs');
 var path = require('path');
 var del = require('del');
 var shelljs = require('shelljs');
-var minifycss = require('gulp-minify-css');
 var htmlmin = require('gulp-htmlmin');
 var htmlclean = require('gulp-htmlclean');
 var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
 var ghPages = require('gh-pages');
-var autoprefixer = require('gulp-autoprefixer');
+var autoprefixer = require('autoprefixer');
+var cssnano = require('cssnano');
+var postcss = require('gulp-postcss');
 var root = require('./book.json').root;
 var buildDir = './dist';
+// 过滤
+var opacity = function (opts) {
+    return function (css) {
+        css.walkDecls(function(decl) {
+            if (decl.prop === 'opacity') {
+                decl.parent.insertAfter(decl, {
+                    prop: '-ms-filter',
+                    value: '"progid:DXImageTransform.Microsoft.Alpha(Opacity=' + (parseFloat(decl.value) * 100) + ')"'
+                });
+            }
+        });
+    };
+};
 var branch = shelljs.exec('git branch | grep "*"', {silent:true}).stdout.replace(/\*\s+(.*?)\s+/, '$1');
 
 gulp.task('syncBookJson', function () {
@@ -61,12 +75,13 @@ gulp.task('init', ['syncBookJson'], function () {
 // 压缩 public 目录 css
 gulp.task('minify-css', function() {
     return gulp.src(buildDir + '/**/*.css')
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions', 'Android >= 4.0'],
-            cascade: true, //是否美化属性值 默认：true 像这样：
-            remove: true //是否去掉不必要的前缀 默认：true
-        }))
-        .pipe(minifycss())
+        .pipe(postcss(
+            [
+                autoprefixer(),
+                opacity(),
+                cssnano()
+            ]
+        ))
         .pipe(gulp.dest(buildDir));
 });
 
