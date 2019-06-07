@@ -55,20 +55,20 @@ gulp.task('init', ['syncBookJson'], function () {
         shelljs.echo('-e', '正在生成目录：' + root);
         shelljs.mkdir(root);
         shelljs.echo('-e', '生成目录' + root + '完成！');
-        shelljs.exec('gulp init');
-    } else if (!shelljs.test('-e', root + '/SUMMARY.md')) {
-        shelljs.echo('-e', '初始化gitbook项目');
-        shelljs.cd(root);
-        shelljs.exec('gitbook init');
-        shelljs.cd('..');
-        shelljs.echo('-e', '初始化gitbook项目完成');
-        shelljs.exec('gulp init');
-    } else {
+    }
+    if (!shelljs.test('-e', root + '/SUMMARY.md')) {
         shelljs.echo('-e', '创建SUMMARY依赖文件');
         shelljs.cd(root);
         shelljs.exec('gitbook init');
         shelljs.cd('..');
         shelljs.echo('-e', '创建SUMMARY依赖文件完成');
+        shelljs.exec('gulp init');
+    } else {
+        shelljs.echo('-e', '初始化gitbook项目');
+        shelljs.cd(root);
+        shelljs.exec('gitbook init');
+        shelljs.cd('..');
+        shelljs.echo('-e', '初始化gitbook项目完成');
     }
 });
 
