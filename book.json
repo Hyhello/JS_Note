@@ -8,8 +8,8 @@
     "output.name": "site",
     "links": {
         "sidebar": {
-            "Home": "https://book.hyhello.top",
-            "Blog": "https://blog.hyhello.top"
+            "首页": "https://book.hyhello.top",
+            "博客": "https://blog.hyhello.top"
         }
     },
     "plugins": [
