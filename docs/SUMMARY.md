@@ -1,25 +1,31 @@
 # Summary
 
-## 简介
-* [简介](README.md)
+## 前沿
+* [前沿](README.md)
+
+## 架构
+* [目录结构](framework/structure.md)
+* [起步](framework/start.md)
 
 ## 基础
-* [canvas元素](basics/element.md)
-* [canvas属性](basics/attribute.md)
-* [绘制环境2d](basics/drawEnv.md)
-* [矩形](basics/rect.md)
-* [渐变色与图案](basics/rect.md)
-* [阴影](basics/shadow.md)
-* [非零环绕规则](basics/noZeroRule.md)
-* [发布](basics/deploy.md)
-* [生成电子书](basics/generating-ebooks-and-pdfs.md)
+* [条件渲染](basics/show.md)
+* [列表渲染](basics/for.md)
+* [事件处理](basics/event.md)
+* [表单输入绑定](basics/model.md)
+* [插槽](basics/slot.md)
+* [动态组件](basics/is.md)
 
 ## 进阶
+* [函数式组件](advanced/render.md)
+* [混合类](advanced/mixin.md)
+* [指令](advanced/directive.md)
+* [过滤器](advanced/filter.md)
 * [插件](advanced/plugins.md)
 
 ## 附录
-* [资源](appendix/resources.md)
-
------
-* [术语](GLOSSARY.md)
+* [webpack](appendix/webpack.md)
+* [postcss](appendix/postcss.md)
+* [eslint](appendix/eslint.md)
+* [stylelint](appendix/stylelint.md)
+* [jest](appendix/jest.md)
 
