@@ -29,5 +29,13 @@
     "gulp-util": "^3.0.8",
     "run-sequence": "^2.2.1",
     "shelljs": "^0.8.2"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "not ie <= 8",
+    "iOS >= 7",
+    "Android > 4.1",
+    "Firefox > 20",
+    "last 2 versions"
+  ]
 }
