@@ -1,0 +1,25 @@
+{
+  "name": "js_note",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "devDependencies": {
+    "del": "^4.1.1",
+    "gulp": "^4.0.2",
+    "gulp-cache": "^1.1.2",
+    "gulp-changed": "^4.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyhello/JS_Note.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hyhello/JS_Note/issues"
+  },
+  "homepage": "https://book.hyhello.top"
+}
