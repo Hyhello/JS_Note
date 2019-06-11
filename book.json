@@ -12,6 +12,9 @@
             "博客": "https://blog.hyhello.top"
         }
     },
+    "styles": {
+        "website": "assets/styles/website.css"
+    },
     "plugins": [
         "-lunr",
         "-search",
