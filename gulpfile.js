@@ -97,7 +97,7 @@ gulp.task('minify-html', function() {
          minifyCSS: true,
          minifyURLs: true,
     }))
-    .pipe(gulp.dest(buildDir))
+    .pipe(gulp.dest(buildDir));
 });
 
 // 压缩图片
@@ -113,7 +113,7 @@ gulp.task('minify-image', function () {
                         }
                     ]
                 })))
-                .pipe(gulp.dest(buildDir))
+                .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('copy', function () {
@@ -142,7 +142,7 @@ gulp.task('deploy', function () {
 
 // build
 gulp.task('build', function (cb) {
-    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css'], cb);
+    runSequence('clean:dist', 'copy', ['minify-html', 'minify-css', 'minify-image'], cb);
 });
 
 gulp.task('serve', ['init'], function () {
