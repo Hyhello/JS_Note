@@ -5,6 +5,8 @@ var del = require('del');
 var shelljs = require('shelljs');
 var htmlmin = require('gulp-htmlmin');
 var htmlclean = require('gulp-htmlclean');
+var imagemin = require('gulp-imagemin');
+var cache = require('gulp-cache');
 var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
 var ghPages = require('gh-pages');
@@ -96,6 +98,22 @@ gulp.task('minify-html', function() {
          minifyURLs: true,
     }))
     .pipe(gulp.dest(buildDir))
+});
+
+// 压缩图片
+gulp.task('minify-image', function () {
+    return gulp.src(buildDir + '/**/*.{png,jpg,gif,ico}')
+                .pipe(cache(imagemin({
+                    interlaced: true,
+                    progressive: true,
+                    optimizationLevel: 5,
+                    svgoPlugins: [
+                        {
+                            removeViewBox: true
+                        }
+                    ]
+                })))
+                .pipe(gulp.dest(buildDir))
 });
 
 gulp.task('copy', function () {
