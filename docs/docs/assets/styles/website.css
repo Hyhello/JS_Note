@@ -66,3 +66,7 @@ input[type=checkbox]{
     border-radius: 4px;
     background: #efefef;
 }
+
+.gitbook-link {
+    display: none !important;
+}

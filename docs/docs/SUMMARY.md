@@ -1,11 +1,15 @@
 # Summary
 
-## 架构
+## 介绍
 * [介绍](README.md)
+
+## 架构
 * [目录结构](framework/structure.md)
-* [快速上手](framework/start.md)
+* [准备工作](framework/start.md)
+* [调试工具](framework/tool.md)
 
 ## 基础
+* [生命周期](basics/lifecycle.md)
 * [条件渲染](basics/show.md)
 * [列表渲染](basics/for.md)
 * [事件处理](basics/event.md)
