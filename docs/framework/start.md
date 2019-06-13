@@ -8,6 +8,7 @@
 
 首先，如果您还没有安装node和npm, 请获取他们。强烈建议使用[**yarn**](https://yarn.bootcss.com/)或[**cnpm**](http://npm.taobao.org/)，因npm服务器在国外下载包的速度超级慢。
 
+> [!NOTE]
 > **注：本文档演示中大部分采用cnpm，少部分使用yarn。**
 
 项目环境依赖如下：
@@ -20,7 +21,7 @@
 > 项目所需工具及依赖项：
 
 ``` install
-npm install
+npm install    // 可以去喝一杯:coffee:, 放松放松~
 ```
 
 > 项目运行:
