@@ -44,7 +44,7 @@
         "copy-code-button@^0.0.2",
         "todo@^0.1.3",
         "terminal@^0.3.2",
-        "alerts@^0.2.0",
+        "flexible-alerts@^1.0.3",
         "include-csv@^0.1.0",
         "puml@^1.0.1",
         "musicxml@^1.0.2",
@@ -98,6 +98,14 @@
         },
         "sectionx": {
             "tag": "b"
+        },
+        "flexible-alerts": {
+            "style": "callout",
+            "comment": {
+              "label": "Comment",
+              "icon": "fa fa-comments",
+              "className": "info"
+            }
         },
         "terminal": {
             "copyButtons": true,
