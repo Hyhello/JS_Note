@@ -20,24 +20,24 @@
 
 > 项目所需工具及依赖项：
 
-``` install
+``` javascript
 npm install    // 可以去喝一杯:coffee:, 放松放松~
 ```
 
 > 项目运行:
 
-``` run
+``` javascript
 npm run serve || npm start
 ```
 
 > 项目构建：
 
-``` build
+``` javascript
 npm run build
 ```
 
 > 其他：
 
-``` lint
+``` javascript
 npm run lint    // 修复代码, 使其符合eslint编码规范及vue编码规范
 ```

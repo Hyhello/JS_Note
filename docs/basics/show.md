@@ -30,7 +30,7 @@
 
 - 用法:
 
-    ``` use
+    ``` markup
         <div v-if="Math.random() > 0.5">
             hello 0.5 ~ 1
         <div>
@@ -47,7 +47,7 @@
 
 - 用法:
 
-    ``` use
+    ``` markup
         <div v-if="Math.random() > 0.5">
             hello 0.5 ~ 1
         <div>
@@ -63,7 +63,7 @@
 
 - 用法:
 
-    ``` use
+    ``` markup
         <div v-show="Math.random() < 1">
             hello~
         <div>
@@ -77,7 +77,7 @@
 
 - 用法:
 
-    ``` use
+    ``` markup
         <div v-hide="Math.random() < 1">
             88~
         <div>

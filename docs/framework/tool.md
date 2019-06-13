@@ -28,7 +28,7 @@ vue-devtools是一款基于浏览器的的调试工具，支持Chrome、Firefox�
 
 第二步：找到下载文件并解压, 执行以下命令:
 
-``` down
+``` javascript
 cd [目录文件]        // 切换到项目文件
 
 npm install         // 可以去喝一杯:coffee:, 放松放松~

@@ -87,7 +87,7 @@
             "skipFirstH1": true
         },
         "edit-link": {
-            "base": "https://github.com/Hyhello/JS_Note/edit/canvas/docs",
+            "base": "https://github.com/Hyhello/JS_Note/edit/vue/docs",
             "label": "编辑当前页"
         },
         "anchor-navigation-ex": {
@@ -102,9 +102,9 @@
         "flexible-alerts": {
             "style": "callout",
             "comment": {
-              "label": "Comment",
-              "icon": "fa fa-comments",
-              "className": "info"
+                "label": "Comment",
+                "icon": "fa fa-comments",
+                "className": "info"
             }
         },
         "terminal": {
