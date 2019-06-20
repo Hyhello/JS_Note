@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>球形进度条</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			text-align: center;
+			background-color: #eeeeee;
+		}
+		#ball {
+			margin: 10px auto;
+			width: 500px;
+			height: 200px;
+		}
+		canvas {
+			border: 1px solid #cccccc;
+			background-color: #FFFFFF;
+		}
+	</style>
+</head>
+<body>
+	<div id="ball">
+		<!-- 球形进度条 -->
+	</div>
+	<input type="text" id="inp">
+	<script src="index.js"></script>
+	<script>
+		var oInp = document.getElementById('inp');
+		var ball = new Ball('ball');
+		oInp.oninput = function () {
+			ball.update(oInp.value);
+		};
+	</script>
+</body>
+</html>
