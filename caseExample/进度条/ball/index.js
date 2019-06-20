@@ -91,7 +91,8 @@
 	// 配置文件
 	Ball.defaults = {
 		percentage: 0,						// 初始进度值
-        ballStyle: 'blue',					// 外圆颜色
+        borderStyle: 'blue',				// 外圆颜色
+        waveStyle: '#000000',               // 水的颜色
         fontStyle: '#f6b71e',               // 字体颜色
         fontSize: '30px',                   // 字体大小 携带px
         fontFamily: 'Microsoft Yahei',      // 字体
@@ -131,7 +132,7 @@
 		},
 		// 渲染部分
 		render () {
-			this.$conf.percentage = Math.max(0, Math.min(this.$conf.percentage, 100));
+			this.$conf.percentage = Math.round(Math.max(0, Math.min(this.$conf.percentage, 100)));
 			// 清除圆
 			this.clearRect();
 			// 绘制外圆
@@ -158,7 +159,7 @@
 			this.$ctx.translate(this.$conf.iW / 2, this.$conf.iH / 2);
 
 			this.$ctx.lineWidth = this.$conf.lineWidth;
-			this.$ctx.strokeStyle = this.$conf.ballStyle;
+			this.$ctx.strokeStyle = this.$conf.borderStyle;
 			this.$ctx.arc(0, 0, this.$conf.radius, 0, Math.PI * 2);
 			this.$ctx.stroke();
 
@@ -187,7 +188,8 @@
 			this.clearRect();
 			this.$ctx.beginPath();
 			this.$ctx.save();
-			this.$ctx.translate(this.$conf.iW / 2 - this.$conf.radius, this.$conf.iH / 2);
+            this.$ctx.translate(this.$conf.iW / 2 - this.$conf.radius, this.$conf.iH / 2);
+            this.$ctx.fillStyle = this.$conf.waveStyle;
 			this.$ctx.moveTo(0, this.$conf.radius);
 			// +0.01 为了保持平衡
 			for (var i = -this.$conf.coefficient; i <= this.$conf.coefficient + 0.01; i += 0.01) {

@@ -29,23 +29,19 @@
 	<div id="ball">
 		<!-- 球形进度条 -->
 	</div>
-	<input type="text" id="inp">
 	<script src="index.js"></script>
 	<script>
 		var oInp = document.getElementById('inp');
         var ball = new Ball('ball', {
             percentage: 80,
-            lineWidth: 30,
+            borderStyle: 'yellow',
+            lineWidth: 10,
             fontSize: '30px'
         });
-        oInp.value = 80;
-		oInp.oninput = function () {
-			ball.update(oInp.value);
-        };
         var start = 0;
         function step () {
             if (start == 50) return;
-            start++;
+            start += 0.5;
             ball.update(start);
             window.requestAnimationFrame(step);
         }
