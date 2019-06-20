@@ -33,10 +33,23 @@
 	<script src="index.js"></script>
 	<script>
 		var oInp = document.getElementById('inp');
-		var ball = new Ball('ball');
+        var ball = new Ball('ball', {
+            percentage: 80,
+            lineWidth: 30,
+            fontSize: '30px'
+        });
+        oInp.value = 80;
 		oInp.oninput = function () {
 			ball.update(oInp.value);
-		};
+        };
+        var start = 0;
+        function step () {
+            if (start == 50) return;
+            start++;
+            ball.update(start);
+            window.requestAnimationFrame(step);
+        }
+        step();
 	</script>
 </body>
 </html>

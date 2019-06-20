@@ -90,13 +90,17 @@
 
 	// 配置文件
 	Ball.defaults = {
-		percentage: 80,						// 初始进度值
-		ballStyle: 'blue',					// 外圆颜色
+		percentage: 0,						// 初始进度值
+        ballStyle: 'blue',					// 外圆颜色
+        fontStyle: '#f6b71e',               // 字体颜色
+        fontSize: '30px',                   // 字体大小 携带px
+        fontFamily: 'Microsoft Yahei',      // 字体
+        fontWeight: 'bold',                 // 字体宽窄
 		lineWidth: 5,						// 外圆线宽
 		radianStep: 0.06,					// 每帧增加的弧度[0,2PI](作用于sin曲线, 正值相当于原点右移, 曲线左移)
 		frequency: 0.06,					// 角频率,即震动频率
 		radianOffset: 0,					// 当前弧度的偏移
-		amplitude: 8,						// 振幅
+		amplitude: 5,						// 振幅
 		halfWaveCount: 10,					// 半波长个数
 		coefficient: 0.4					// 衰减系数(越大, 边缘衰减的就越多, 震动宽度相应也越窄)
 	};
@@ -164,8 +168,8 @@
 			this.$ctx.beginPath();
 			this.$ctx.save();
 			this.$ctx.translate(this.$conf.iW / 2, this.$conf.iH / 2);
-			this.$ctx.fillStyle = '#f6b71e';
-			this.$ctx.font = 'bold 45px Microsoft Yahei';
+			this.$ctx.fillStyle = this.$conf.fontStyle;
+			this.$ctx.font = this.$conf.fontWeight + ' ' + this.$conf.fontSize + ' ' + this.$conf.fontFamily;
 			this.$ctx.textAlign = 'center';
 			this.$ctx.textBaseline = 'middle';
 			this.$ctx.fillText(text, 5, 5);
@@ -173,14 +177,13 @@
 			this.$ctx.restore();
 		},
 		// 绘制波形
-		drawWave (halfWaveCount) {
+		drawWave (amplitude) {
 			var x, y;
 			var i = -this.$conf.coefficient;
-			halfWaveCount = halfWaveCount === undefined ? this.$conf.halfWaveCount : halfWaveCount;
-			console.log(halfWaveCount);
+			amplitude = amplitude === undefined ? this.$conf.amplitude : amplitude;
 			this.$conf.radianOffset = (this.$conf.radianOffset + this.$conf.frequency) % (Math.PI * 2);
 			this.clearWaveLoop();
-			// this.clipWave();
+			this.clipWave();
 			this.clearRect();
 			this.$ctx.beginPath();
 			this.$ctx.save();
@@ -188,14 +191,14 @@
 			this.$ctx.moveTo(0, this.$conf.radius);
 			// +0.01 为了保持平衡
 			for (var i = -this.$conf.coefficient; i <= this.$conf.coefficient + 0.01; i += 0.01) {
-					//i是当前位置相对于整个长度的比率( x=width*(i+K)/(2*K))
-					x = this.$conf.radius * 2 * (i + this.$conf.coefficient) / (2 * this.$conf.coefficient);
-					//加offset相当于把sin曲线向右平移
-					y = this.$conf.radius - this.$conf.radius * 2 * this.$conf.percentage / 100 + this.$conf.amplitude * calcAttenuation(i, this.$conf.coefficient) *
-						Math.sin(halfWaveCount * i + this.$conf.radianOffset);
-					this.$ctx.lineTo(x, y);
+                //i是当前位置相对于整个长度的比率( x=width*(i+K)/(2*K))
+                x = this.$conf.radius * 2 * (i + this.$conf.coefficient) / (2 * this.$conf.coefficient);
+                //加offset相当于把sin曲线向右平移
+                y = this.$conf.radius - this.$conf.radius * 2 * this.$conf.percentage / 100 + amplitude * calcAttenuation(i, this.$conf.coefficient) *
+                    Math.sin(this.$conf.halfWaveCount * i + this.$conf.radianOffset);
+                this.$ctx.lineTo(x, y);
 			}
-			this.$ctx.lineTo(this.$conf.radius * 2, this.$conf.radius - this.$conf.lineWidth / 2);
+			this.$ctx.lineTo(this.$conf.radius * 2, this.$conf.radius);
 			this.$ctx.fill();
 			this.$ctx.restore();
 		},
